@@ -28,7 +28,7 @@ public interface OtpRepository {
     @ResultMap("OtpMapper")
     Otp getLatestOtpByCode(String otpCode);
 
-    @Select("SELECT * FROM otp_tb WHERE user_id = (SELECT user_id FROM users WHERE email = #{email}) AND verified = false ORDER BY expiration_time DESC LIMIT 1")
+    @Select("SELECT * FROM otp_tb WHERE user_id = (SELECT user_id FROM users_tb WHERE email = #{email}) AND verified = false ORDER BY expiration_time DESC LIMIT 1")
     @ResultMap("OtpMapper")
     Otp getLatestUnverifiedOtpByEmail(String email);
 }
