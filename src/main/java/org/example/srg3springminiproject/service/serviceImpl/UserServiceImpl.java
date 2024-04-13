@@ -21,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -149,6 +150,19 @@ public class UserServiceImpl implements UserService {
         long currentTimeMillis = System.currentTimeMillis();
         long expirationTimeMillis = currentTimeMillis + (2 * 30 * 1000);
         return new Timestamp(expirationTimeMillis);
+    }
+    @Override
+    public String getUsernameOfCurrentUser() {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal();
+            String username = userDetails.getUsername();
+            System.out.println(username);
+            return username;
+    }
+
+    @Override
+    public User getUserCurrentByEmail(String email) {
+        return userRepository.getUserByEmail(email);
     }
 
 }

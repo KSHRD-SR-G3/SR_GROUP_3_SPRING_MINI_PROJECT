@@ -1,6 +1,7 @@
 package org.example.srg3springminiproject.service;
 
 import jakarta.mail.MessagingException;
+import org.example.srg3springminiproject.model.User;
 import org.example.srg3springminiproject.model.request.ForgetRequest;
 import org.example.srg3springminiproject.model.request.LoginRequest;
 import org.example.srg3springminiproject.model.request.RegisterRequest;
@@ -17,4 +18,8 @@ public interface UserService {
     String resendOtp(String email);
 
     UserResponse forgetPassword(ForgetRequest forgetRequest, String email);
+
+    String getUsernameOfCurrentUser();
+
+    User getUserCurrentByEmail(String currentUserEmail);
 }

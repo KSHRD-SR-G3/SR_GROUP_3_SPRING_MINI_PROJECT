@@ -84,11 +84,5 @@ public class JWTService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    String getUsernameOfCurrentUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        String username = userDetails.getUsername();
-        System.out.println(username);
-        return username;
-    }
+
 }
