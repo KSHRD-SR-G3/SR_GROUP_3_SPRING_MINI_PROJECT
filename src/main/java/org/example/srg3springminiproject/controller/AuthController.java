@@ -3,6 +3,7 @@ package org.example.srg3springminiproject.controller;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.example.srg3springminiproject.model.User;
 import org.example.srg3springminiproject.model.request.ForgetRequest;
 import org.example.srg3springminiproject.model.request.LoginRequest;
 import org.example.srg3springminiproject.model.request.RegisterRequest;
@@ -85,5 +86,16 @@ public class AuthController {
                 .payload(user)
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfile() {
+        String currentUserEmail = userService.getUsernameOfCurrentUser();
+        User userProfile = userService.getUserCurrentByEmail(currentUserEmail);
+        if (userProfile != null) {
+            return ResponseEntity.ok(userProfile);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User profile not found");
+        }
     }
 }
