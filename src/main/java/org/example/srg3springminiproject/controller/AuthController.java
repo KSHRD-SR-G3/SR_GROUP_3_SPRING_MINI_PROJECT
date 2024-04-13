@@ -33,12 +33,13 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid() LoginRequest loginRequest) {
         AuthResponse response = userService.login(loginRequest);
-        if (response != null) {
-            return ResponseEntity.ok(new APIResponse<>("Login successful", response, HttpStatus.OK, new Date()));
+        if (response != null && response.getAccessToken() != null) {
+            return ResponseEntity.ok().body(response.getAccessToken());
         } else {
-            return ResponseEntity.badRequest().body(new APIResponse<>("Wrong email or password", null, HttpStatus.BAD_REQUEST, new Date()));
+            return ResponseEntity.badRequest().body("Login Failed, Please try again");
         }
     }
+
     @PutMapping("/verify-otp")
     public ResponseEntity<APIResponse<String>> verifyOtp(@RequestParam String otpCode) {
         if (userService.verifyOtp(otpCode)) {
