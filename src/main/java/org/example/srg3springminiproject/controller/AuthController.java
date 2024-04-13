@@ -28,7 +28,7 @@ public class AuthController {
         System.out.println(userResponse);
         System.out.println(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse<>(
-                "Check your Email for Verify Email", userResponse, HttpStatus.CREATED,new Date()
+                "Please Check Email for Verify OTP Code", userResponse, HttpStatus.CREATED,new Date()
         ));
     }
     @PostMapping("/login")
