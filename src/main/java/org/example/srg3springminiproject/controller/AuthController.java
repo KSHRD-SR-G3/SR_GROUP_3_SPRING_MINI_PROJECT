@@ -1,9 +1,12 @@
 package org.example.srg3springminiproject.controller;
 
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.example.srg3springminiproject.model.request.LoginRequest;
 import org.example.srg3springminiproject.model.request.RegisterRequest;
 import org.example.srg3springminiproject.model.response.APIResponse;
+import org.example.srg3springminiproject.model.response.AuthResponse;
 import org.example.srg3springminiproject.model.response.UserResponse;
 import org.example.srg3springminiproject.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,15 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse<>(
                 "Check your Email for Verify Email", userResponse, HttpStatus.CREATED,new Date()
         ));
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid() LoginRequest loginRequest) {
+        AuthResponse response = userService.login(loginRequest);
+        if (response != null) {
+            return ResponseEntity.ok(new APIResponse<>("Login successful", response, HttpStatus.OK, new Date()));
+        } else {
+            return ResponseEntity.badRequest().body(new APIResponse<>("Wrong email or password", null, HttpStatus.BAD_REQUEST, new Date()));
+        }
     }
 
 }

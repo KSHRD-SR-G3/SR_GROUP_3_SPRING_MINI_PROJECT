@@ -2,15 +2,24 @@ package org.example.srg3springminiproject.service.serviceImpl;
 
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import org.example.srg3springminiproject.config.PasswordConfig;
+import org.example.srg3springminiproject.jwt.JWTService;
 import org.example.srg3springminiproject.model.Otp;
 import org.example.srg3springminiproject.model.User;
+import org.example.srg3springminiproject.model.request.LoginRequest;
 import org.example.srg3springminiproject.model.request.RegisterRequest;
+import org.example.srg3springminiproject.model.response.AuthResponse;
 import org.example.srg3springminiproject.model.response.UserResponse;
 import org.example.srg3springminiproject.repository.OtpRepository;
 import org.example.srg3springminiproject.repository.UserRepository;
+import org.example.srg3springminiproject.service.AuthService;
 import org.example.srg3springminiproject.service.UserService;
 import org.example.srg3springminiproject.util.EmailUtil;
 import org.example.srg3springminiproject.util.OtpUtil;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +34,10 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final OtpUtil otpUtil;
     private final EmailUtil emailUtil;
+    private final AuthService authService;
+    private final PasswordConfig passwordConfig;
+    private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
     @Override
     public UserResponse register(RegisterRequest registerRequest) throws MessagingException {
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword()) || registerRequest.getPassword().length() < 8 ) {
@@ -47,7 +60,31 @@ public class UserServiceImpl implements UserService {
         return new UserResponse(savedUser.getUserId(), savedUser.getEmail());
     }
 
-
+    @Override
+    public AuthResponse login(LoginRequest loginRequest) {
+        UserDetails userDetails = authService.loadUserByUsername(loginRequest.getEmail());
+        System.out.println(userDetails);
+        if (userDetails != null) {
+            User user = userRepository.getUserByEmail(loginRequest.getEmail());
+            if (user != null) {
+                Otp latestOtp = otpRepository.getOtpByUserId(user.getUserId());
+                if (latestOtp == null || !latestOtp.isVerified()) {
+                    return new AuthResponse("Your account is not verified yet, please try again.");
+                }
+                if (!passwordConfig.passwordEncoder().matches(loginRequest.getPassword(), userDetails.getPassword())) {
+                    return new AuthResponse("Passwords do not match");
+                }
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                if (authentication.isAuthenticated()) {
+                    String token = jwtService.generateToken(userDetails.getUsername());
+                    return new AuthResponse(token);
+                }
+            } else {
+                return new AuthResponse("User not found with email " + loginRequest.getEmail());
+            }
+        }
+        return null;
+    }
 
     private Timestamp calculateExpirationTime() {
         long currentTimeMillis = System.currentTimeMillis();
