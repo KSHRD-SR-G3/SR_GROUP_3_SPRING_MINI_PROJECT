@@ -35,9 +35,13 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody @Valid() LoginRequest loginRequest) {
         AuthResponse response = userService.login(loginRequest);
         if (response != null && response.getAccessToken() != null) {
-            return ResponseEntity.ok().body(response.getAccessToken());
+            return ResponseEntity.ok().body(new APIResponse<>(
+                    "Login Successful", response.getAccessToken(), HttpStatus.OK, new Date()
+            ));
         } else {
-            return ResponseEntity.badRequest().body("Login Failed, Please try again");
+            return ResponseEntity.badRequest().body(new APIResponse<>(
+                    "Login Failed, Please try again", null, HttpStatus.BAD_REQUEST, new Date()
+            ));
         }
     }
 
