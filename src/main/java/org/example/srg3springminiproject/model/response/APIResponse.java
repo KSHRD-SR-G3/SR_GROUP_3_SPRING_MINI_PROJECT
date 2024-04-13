@@ -1,12 +1,12 @@
 package org.example.srg3springminiproject.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 @Data
@@ -15,6 +15,11 @@ import java.util.Date;
 @Builder
 public class APIResponse<T> {
     private String message;
+//<<<<<<< HEAD
+//    private T payload;
+//    private HttpStatus status;
+//    private LocalDateTime dateTime;
+//=======
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T payload;
     private HttpStatus status;
