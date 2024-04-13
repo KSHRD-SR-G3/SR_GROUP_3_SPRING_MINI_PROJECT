@@ -139,8 +139,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse forgetPassword(ForgetRequest forgetRequest, String email) {
-        if (!forgetRequest.getPassword().equals(forgetRequest.getConfirmPassword())) {
+        if (!forgetRequest.getPassword().equals(forgetRequest.getConfirmPassword()) || forgetRequest.getPassword().length() < 8) {
             throw new IllegalArgumentException("Passwords do not match");
+        }else {
+            forgetRequest.setPassword(passwordEncoder.encode(forgetRequest.getPassword()));
         }
         User user = userRepository.updatePassword(forgetRequest,email);
         return modelMapper.map(user, UserResponse.class);
