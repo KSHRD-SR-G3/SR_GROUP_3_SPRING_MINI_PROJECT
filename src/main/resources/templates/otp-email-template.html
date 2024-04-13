@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>OTP Email Template</title>
+    <style>
+        .otp-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            text-align: center;
+            margin: 10px auto;
+        }
+
+        .otp-box span {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1 class="center green">Your OTP for Verification is:</h1>
+    <div class="otp-box center">
+        <span th:text="${otpCode}"></span>
+    </div>
+</div>
+</body>
+</html>
