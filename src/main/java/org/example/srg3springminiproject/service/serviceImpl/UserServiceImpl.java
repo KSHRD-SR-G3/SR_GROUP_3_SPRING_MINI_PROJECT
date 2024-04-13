@@ -109,6 +109,29 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    public String resendOtp(String email) {
+        User user = userRepository.getUserByEmail(email);
+        if (user == null) {
+            return "User with email " + email + " not found.";
+        }
+        String newOtpCode = otpUtil.generateOtp();
+        try {
+            emailUtil.sendOtpEmail(email, newOtpCode);
+        } catch (MessagingException e) {
+            return "Failed to send OTP email. Please try again later.";
+        }
+        Otp existingOtp = otpRepository.getLatestUnverifiedOtpByEmail(email);
+        if (existingOtp == null) {
+            return "Failed to update OTP. Please try again.";
+        }
+        existingOtp.setOtpCode(newOtpCode);
+        existingOtp.setIssuedAt(new Timestamp(System.currentTimeMillis()));
+        existingOtp.setExpirationTime(calculateExpirationTime());
+        otpRepository.updateOtp(existingOtp);
+        return "OTP resent successfully.";
+    }
+
     private Timestamp calculateExpirationTime() {
         long currentTimeMillis = System.currentTimeMillis();
         long expirationTimeMillis = currentTimeMillis + (2 * 30 * 1000);

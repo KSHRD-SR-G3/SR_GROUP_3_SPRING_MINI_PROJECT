@@ -12,4 +12,6 @@ public interface UserService {
     AuthResponse login(LoginRequest loginRequest);
 
     boolean verifyOtp(String otpCode);
+
+    String resendOtp(String email);
 }

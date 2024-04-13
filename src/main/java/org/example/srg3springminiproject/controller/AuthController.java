@@ -58,5 +58,20 @@ public class AuthController {
             return ResponseEntity.badRequest().body(response);
         }
     }
+    @PostMapping("/resend-otp")
+    public ResponseEntity<APIResponse<String>> resendOtp(@RequestParam String email) {
+        String message = userService.resendOtp(email);
+        HttpStatus status = HttpStatus.OK;
+        if (!message.equals("OTP resent successfully.")) {
+            status = HttpStatus.BAD_REQUEST;
+        }
+        APIResponse<String> response = APIResponse.<String>builder()
+                .message(message)
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(status).body(response);
+    }
+
 
 }
