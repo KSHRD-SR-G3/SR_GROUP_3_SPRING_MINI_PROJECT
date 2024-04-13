@@ -86,5 +86,4 @@ public class AuthController {
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
 }
