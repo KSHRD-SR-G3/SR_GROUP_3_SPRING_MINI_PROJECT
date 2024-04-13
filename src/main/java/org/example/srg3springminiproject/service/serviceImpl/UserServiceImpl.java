@@ -89,8 +89,6 @@ public class UserServiceImpl implements UserService {
         return new AuthResponse("User not found with email " + loginRequest.getEmail());
     }
 
-
-
     @Override
     public boolean verifyOtp(String otpCode) {
         System.out.println("OTP code is: " + otpCode);
