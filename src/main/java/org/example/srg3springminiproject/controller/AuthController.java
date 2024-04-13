@@ -3,6 +3,7 @@ package org.example.srg3springminiproject.controller;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.example.srg3springminiproject.model.request.ForgetRequest;
 import org.example.srg3springminiproject.model.request.LoginRequest;
 import org.example.srg3springminiproject.model.request.RegisterRequest;
 import org.example.srg3springminiproject.model.response.APIResponse;
@@ -73,5 +74,16 @@ public class AuthController {
         return ResponseEntity.status(status).body(response);
     }
 
+    @PutMapping("/forget-password")
+    public ResponseEntity<APIResponse<UserResponse>> forgetPassword(@RequestBody ForgetRequest forgetRequest, @RequestParam String email) {
+        UserResponse user  = userService.forgetPassword(forgetRequest, email);
+        APIResponse<UserResponse> response = APIResponse.<UserResponse>builder()
+                .message("Your Password is Changed Successfully: ")
+                .status(HttpStatus.CREATED)
+                .creationDate(new Date())
+                .payload(user)
+                .build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
 }

@@ -6,6 +6,7 @@ import org.example.srg3springminiproject.config.PasswordConfig;
 import org.example.srg3springminiproject.jwt.JWTService;
 import org.example.srg3springminiproject.model.Otp;
 import org.example.srg3springminiproject.model.User;
+import org.example.srg3springminiproject.model.request.ForgetRequest;
 import org.example.srg3springminiproject.model.request.LoginRequest;
 import org.example.srg3springminiproject.model.request.RegisterRequest;
 import org.example.srg3springminiproject.model.response.AuthResponse;
@@ -16,6 +17,7 @@ import org.example.srg3springminiproject.service.AuthService;
 import org.example.srg3springminiproject.service.UserService;
 import org.example.srg3springminiproject.util.EmailUtil;
 import org.example.srg3springminiproject.util.OtpUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,7 +30,7 @@ import java.sql.Timestamp;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-
+    private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final OtpRepository otpRepository;
     private final PasswordEncoder passwordEncoder;
@@ -130,6 +132,15 @@ public class UserServiceImpl implements UserService {
         existingOtp.setExpirationTime(calculateExpirationTime());
         otpRepository.updateOtp(existingOtp);
         return "OTP resent successfully.";
+    }
+
+    @Override
+    public UserResponse forgetPassword(ForgetRequest forgetRequest, String email) {
+        if (!forgetRequest.getPassword().equals(forgetRequest.getConfirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
+        User user = userRepository.updatePassword(forgetRequest,email);
+        return modelMapper.map(user, UserResponse.class);
     }
 
     private Timestamp calculateExpirationTime() {
