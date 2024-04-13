@@ -10,4 +10,6 @@ public interface UserService {
     UserResponse register(RegisterRequest registerRequest)throws MessagingException;
 
     AuthResponse login(LoginRequest loginRequest);
+
+    boolean verifyOtp(String otpCode);
 }

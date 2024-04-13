@@ -11,10 +11,7 @@ import org.example.srg3springminiproject.model.response.UserResponse;
 import org.example.srg3springminiproject.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -39,6 +36,26 @@ public class AuthController {
             return ResponseEntity.ok(new APIResponse<>("Login successful", response, HttpStatus.OK, new Date()));
         } else {
             return ResponseEntity.badRequest().body(new APIResponse<>("Wrong email or password", null, HttpStatus.BAD_REQUEST, new Date()));
+        }
+    }
+    @PutMapping("/verify-otp")
+    public ResponseEntity<APIResponse<String>> verifyOtp(@RequestParam String otpCode) {
+        if (userService.verifyOtp(otpCode)) {
+            APIResponse<String> response = APIResponse.<String>builder()
+                    .message("OTP verified successfully")
+                    .status(HttpStatus.OK)
+                    .creationDate(new Date())
+                    .payload("Your OTP has been successfully verified.")
+                    .build();
+            return ResponseEntity.ok(response);
+        } else {
+            APIResponse<String> response = APIResponse.<String>builder()
+                    .message("Invalid or expired OTP code: "+ new Date())
+                    .status(HttpStatus.BAD_REQUEST)
+                    .creationDate(new Date())
+                    .payload("The OTP code you provided is either invalid or expired. Please try again.")
+                    .build();
+            return ResponseEntity.badRequest().body(response);
         }
     }
 

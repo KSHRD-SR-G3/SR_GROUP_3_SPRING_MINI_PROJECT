@@ -86,6 +86,29 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public boolean verifyOtp(String otpCode) {
+        System.out.println("OTP code is: " + otpCode);
+        Otp latestOtp = otpRepository.getLatestOtpByCode(otpCode);
+        if (latestOtp != null && !latestOtp.isVerified()) {
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            Timestamp expirationTime = latestOtp.getExpirationTime();
+            if (expirationTime.after(currentTime)) {
+                if (latestOtp.getOtpCode().equals(otpCode)) {
+                    if (!latestOtp.isVerified()) {
+                        latestOtp.setVerified(true);
+                        otpRepository.updateOtp(latestOtp);
+                    }
+                    return true;
+                }
+            } else {
+                System.out.println("The OTP has expired: " + expirationTime);
+                return false;
+            }
+        }
+        return false;
+    }
+
     private Timestamp calculateExpirationTime() {
         long currentTimeMillis = System.currentTimeMillis();
         long expirationTimeMillis = currentTimeMillis + (2 * 30 * 1000);
