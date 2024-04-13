@@ -46,7 +46,6 @@ public class AppFileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + fileName + "\"")
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(resource);
-
     }
 
 }
