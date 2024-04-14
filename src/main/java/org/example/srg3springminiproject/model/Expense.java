@@ -15,4 +15,5 @@ public class Expense {
     private String description;
     private LocalDateTime date;
     private Category categories;
+    private User user;
 }
