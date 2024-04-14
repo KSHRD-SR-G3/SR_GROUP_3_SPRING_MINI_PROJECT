@@ -15,11 +15,6 @@ import java.util.Date;
 @Builder
 public class APIResponse<T> {
     private String message;
-//<<<<<<< HEAD
-//    private T payload;
-//    private HttpStatus status;
-//    private LocalDateTime dateTime;
-//=======
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T payload;
     private HttpStatus status;
