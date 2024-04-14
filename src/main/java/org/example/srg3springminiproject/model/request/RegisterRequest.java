@@ -21,7 +21,8 @@ public class RegisterRequest {
     @NotNull
     @NotBlank
     private String confirmPassword;
-
+    @NotNull
+    @NotBlank
     private String profileImage;
 
 }
