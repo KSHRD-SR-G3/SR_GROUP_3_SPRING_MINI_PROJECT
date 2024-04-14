@@ -18,6 +18,7 @@ public class User implements UserDetails {
     private Long userId;
     private String email;
     private String password;
+    private String profileImage;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/api/v1/expense")
+@SecurityRequirement(name = "bearerAuth")
 public class ExpenseController {
     public final ExpenseService expenseService;
 

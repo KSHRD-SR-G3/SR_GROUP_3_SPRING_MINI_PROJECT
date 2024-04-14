@@ -9,9 +9,10 @@ public interface UserRepository {
     @Results(id = "authMapper", value = {
             @Result(property = "userId",column = "user_id"),
             @Result(property = "email", column = "email"),
-            @Result(property = "password", column = "password")
+            @Result(property = "password", column = "password"),
+            @Result(property = "profileImage", column = "profile_image")
     })
-    @Select("INSERT INTO users_tb (email, password) VALUES (#{user.email}, #{user.password}) RETURNING *")
+    @Select("INSERT INTO users_tb (email, password, profile_image) VALUES (#{user.email}, #{user.password}, #{user.profileImage}) RETURNING *")
     User save(@Param("user") User newUser);
 
     @Select("SELECT * FROM users_tb WHERE email = #{email}")

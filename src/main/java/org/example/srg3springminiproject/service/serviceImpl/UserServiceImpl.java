@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setEmail(registerRequest.getEmail());
         user.setPassword(registerRequest.getPassword());
+        user.setProfileImage(registerRequest.getProfileImage());
         User savedUser = userRepository.save(user);
         Otp otp = new Otp();
         otp.setUserId(savedUser.getUserId());
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
         otp.setExpirationTime(calculateExpirationTime());
         otpRepository.insertOtp(otp);
         emailUtil.sendOtpEmail(savedUser.getEmail(), otpCode);
-        return new UserResponse(savedUser.getUserId(), savedUser.getEmail());
+        return new UserResponse(savedUser.getUserId(), savedUser.getEmail(), savedUser.getProfileImage());
     }
 
     @Override

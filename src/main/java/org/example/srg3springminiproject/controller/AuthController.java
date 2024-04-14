@@ -1,5 +1,6 @@
 package org.example.srg3springminiproject.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/v1/Auth")
 @AllArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class AuthController {
     private final UserService userService;
     @PostMapping("/register")
@@ -97,9 +99,10 @@ public class AuthController {
         User userProfile = userService.getUserCurrentByEmail(currentUserEmail);
         if (userProfile != null) {
             return ResponseEntity.ok(userProfile);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User profile not found");
         }
+        return ResponseEntity.badRequest().body(new APIResponse<>(
+                "You are not logged in", null, HttpStatus.BAD_REQUEST, new Date()
+        ));
     }
 
 
