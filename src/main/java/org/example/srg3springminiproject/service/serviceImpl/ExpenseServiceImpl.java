@@ -15,9 +15,9 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<Expense> getAllExpense(int offset, int limit) {
+    public List<Expense> getAllExpense(int offset, int limit, String sortBy, boolean orderBy) {
         offset = (offset - 1) * limit;
-        return expenseRepository.getAllExpense(offset,limit);
+        return expenseRepository.getAllExpense(offset,limit,sortBy,orderBy);
     }
 
     @Override
