@@ -21,16 +21,26 @@ public class AppFileServiceImpl implements AppFileService {
     @Override
     public String uploadFile(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
-        //auto create directory profile_images
-        if(!Files.exists(root)){
-            Files.createDirectories(root);
+        assert fileName != null;
+        if (file.getOriginalFilename().contains(".png") ||
+                file.getOriginalFilename().contains(".jpg") ||
+                file.getOriginalFilename().contains(".jpeg") ||
+                file.getOriginalFilename().contains(".svg") ||
+                file.getOriginalFilename().contains(".gif")
+        ){
+            //auto create directory profile_images
+            if(!Files.exists(root)){
+                Files.createDirectories(root);
+            }
+            //upload profile_image to directory
+            //convert fileName to UUID because we don't want to have duplicate file name UUID help skip duplicate file
+            fileName = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(fileName);
+            //Insert file as byte to directory
+            Files.copy(file.getInputStream(), root.resolve(fileName));
+            return fileName;
+        } else {
+            return "Your file extension not support with our program";
         }
-        //upload profile_image to directory
-        //convert fileName to UUID because we don't want to have duplicate file name UUID help skip duplicate file
-        fileName = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(fileName);
-        //Insert file as byte to directory
-        Files.copy(file.getInputStream(), root.resolve(fileName));
-        return fileName;
     }
 
     @Override
