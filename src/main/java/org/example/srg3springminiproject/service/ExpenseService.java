@@ -8,5 +8,5 @@ import java.util.List;
 public interface ExpenseService {
     List<Expense> getAllExpense(int offset, int limit,  String sortBy, boolean orderBy);
 
-    Expense deleteExpense(int id);
+    void deleteExpense(int id);
 }

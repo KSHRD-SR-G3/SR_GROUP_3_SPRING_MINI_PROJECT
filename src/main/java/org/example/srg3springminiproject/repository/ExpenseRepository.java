@@ -17,10 +17,10 @@ public interface ExpenseRepository {
     })
     List<Expense> getAllExpense(int offset, int limit, String sortBy, boolean orderBy);
 
+
     @Select("""
         delete from expenses_tb where expense_id = #{expenseId}
     """)
     @ResultMap("expenseMapping")
-    Expense deleteExpense(int id);
-
+    void deleteExpense(int id);
 }
