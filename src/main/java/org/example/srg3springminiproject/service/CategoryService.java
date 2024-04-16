@@ -2,7 +2,7 @@ package org.example.srg3springminiproject.service;
 
 
 import org.example.srg3springminiproject.model.Category;
-import org.example.srg3springminiproject.model.dto.request.CategoryRequest;
+import org.example.srg3springminiproject.model.request.CategoryRequest;
 
 import java.util.List;
 
@@ -12,5 +12,7 @@ public interface CategoryService {
 
     Category findCategoryById(Integer id);
 
-    Category saveCategory(CategoryRequest categoryRequest);
+    Category insertCategory(CategoryRequest categoryRequest);
+
+//    Category saveCategory(CategoryRequest categoryRequest);
 }
