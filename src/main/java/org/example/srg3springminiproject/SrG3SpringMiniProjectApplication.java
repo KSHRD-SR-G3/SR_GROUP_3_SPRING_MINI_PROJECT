@@ -19,7 +19,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-//@SecurityRequirement(name = "bearerAuth")
 public class SrG3SpringMiniProjectApplication {
 
     public static void main(String[] args) {
