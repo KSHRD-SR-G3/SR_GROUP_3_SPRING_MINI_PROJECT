@@ -20,7 +20,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/v1/files")
 @AllArgsConstructor
-@SecurityRequirement(name = "bearerAuth")
+
 public class AppFileController {
     private final AppFileService appFileService;
 
