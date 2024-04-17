@@ -168,17 +168,13 @@ public class UserServiceImpl implements UserService {
         return new Timestamp(expirationTimeMillis);
     }
     @Override
-    public String getUsernameOfCurrentUser() {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+    public Long getUsernameOfCurrentUser() {
+            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal();
-            String username = userDetails.getUsername();
-            System.out.println(username);
-            return username;
+            Long userId = userDetails.getUserId();
+            System.out.println(userId);
+            return userId;
     }
 
-    @Override
-    public User getUserCurrentByEmail(String email) {
-        return userRepository.getUserByEmail(email);
-    }
 
 }

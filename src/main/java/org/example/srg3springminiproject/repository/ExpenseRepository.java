@@ -14,7 +14,8 @@ public interface ExpenseRepository {
     """)
     @Results(id="expenseMapper",value = {
             @Result(property = "expenseId",column = "expense_id"),
-            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryById"))
+            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryById")),
+            @Result(property = "user",column = "user_id",one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById"))
     })
     List<Expense> findAllExpense(Integer offset, Integer limit);
 
@@ -26,9 +27,10 @@ public interface ExpenseRepository {
 
 
     @Select("""
-            INSERT INTO  expenses_tb (amount,description,date,category_id)  VALUES (#{expense.amount},#{expense.description},#{expense.date},#{expense.categoryId} )RETURNING *;
+            INSERT INTO  expenses_tb (amount,description,date,category_id,user_id)  VALUES (#{expense.amount},#{expense.description},#{expense.date},#{expense.categoryId},#{UserId} )RETURNING *;
     """)
-    Integer saveExpense(@Param("expense") ExpenseRequest expenseRequest);
+    @ResultMap("expenseMapper")
+    Expense saveExpense(@Param("expense") ExpenseRequest expenseRequest,long UserId);
 
     @Select("""
             

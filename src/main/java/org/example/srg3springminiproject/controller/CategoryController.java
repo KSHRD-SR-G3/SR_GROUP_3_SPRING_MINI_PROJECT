@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class CategoryController {
 
     private final CategoryService categoryService;
+
     @GetMapping()
     public ResponseEntity<APIResponse<List<Category>>> findAllCategory(@RequestParam(defaultValue = "1") Integer offset ,
                                                                        @RequestParam(defaultValue = "5") Integer limit){
