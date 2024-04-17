@@ -21,5 +21,5 @@ public interface UserService {
 
     String getUsernameOfCurrentUser();
 
-    User getUserCurrentByEmail(String currentUserEmail);
+
 }

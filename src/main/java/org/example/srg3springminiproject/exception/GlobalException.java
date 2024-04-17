@@ -3,6 +3,7 @@ package org.example.srg3springminiproject.exception;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -52,5 +53,14 @@ public class GlobalException {
         problemDetail.setTitle("Bad Request");
         problemDetail.setProperty("errors", errors);
         return problemDetail;
+    }
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidInputException(InvalidInputException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+        problemDetail.setTitle("Bad Request");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 }
