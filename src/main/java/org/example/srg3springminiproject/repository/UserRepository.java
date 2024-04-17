@@ -22,4 +22,7 @@ public interface UserRepository {
     @Select("UPDATE users_tb SET password = #{pass.password} WHERE email = #{email} RETURNING *")
     @ResultMap("authMapper")
     User updatePassword(@Param("pass") ForgetRequest forgetRequest , @Param("email") String email);
+    @Select("SELECT * FROM users_tb WHERE user_id = #{id}")
+    @ResultMap("authMapper")
+    User getUserById(@Param("userId") Integer id);
 }
