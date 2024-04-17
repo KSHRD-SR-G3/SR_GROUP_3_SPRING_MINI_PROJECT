@@ -93,17 +93,7 @@ public class AuthController {
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    @GetMapping("/profile")
-    public ResponseEntity<?> getUserProfile() {
-        String currentUserEmail = userService.getUsernameOfCurrentUser();
-        User userProfile = userService.getUserCurrentByEmail(currentUserEmail);
-        if (userProfile != null) {
-            return ResponseEntity.ok(userProfile);
-        }
-        return ResponseEntity.badRequest().body(new APIResponse<>(
-                "You are not logged in", null, HttpStatus.BAD_REQUEST, new Date()
-        ));
-    }
+
 
 
     public static boolean isValidPassword(String password) {
