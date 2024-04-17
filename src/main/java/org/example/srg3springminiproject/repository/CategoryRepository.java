@@ -24,6 +24,12 @@ public interface CategoryRepository {
         @ResultMap("categoryMapper")
         Category findCategoryById(Integer id);
 
+    @Select("""
+        SELECT category_id, name, description FROM categories_tb WHERE category_id=#{id};
+    """)
+    @ResultMap("categoryMapper")
+    Category findCategoryByCategoryId(Integer id);
+
 
 
     @Select("""

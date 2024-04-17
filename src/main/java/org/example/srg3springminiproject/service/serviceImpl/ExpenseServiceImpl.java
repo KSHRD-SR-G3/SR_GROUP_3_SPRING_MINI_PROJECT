@@ -31,7 +31,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public Expense saveExpense(ExpenseRequest expenseRequest) {
         Long UserId = userService.getUsernameOfCurrentUser();
-        Expense expenseId=expenseRepository.saveExpense(expenseRequest,UserId);
+        Expense expenseId = expenseRepository.saveExpense(expenseRequest,UserId);
         return expenseId;
     }
 

@@ -14,8 +14,8 @@ public interface ExpenseRepository {
     """)
     @Results(id="expenseMapper",value = {
             @Result(property = "expenseId",column = "expense_id"),
-            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryById")),
-            @Result(property = "user",column = "user_id",one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById"))
+            @Result(property = "user",column = "user_id",one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById")),
+            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryByCategoryId"))
     })
     List<Expense> findAllExpense(Integer offset, Integer limit);
 
