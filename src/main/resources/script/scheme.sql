@@ -3,8 +3,8 @@ CREATE DATABASE expense_tracking_db;
 CREATE TABLE users_tb (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
---  profile_image BYTEA  -- Optional: Stores profile image data
+    password VARCHAR(255) NOT NULL,
+    profile_image VARCHAR(255)
 );
 
 CREATE TABLE categories_tb (
