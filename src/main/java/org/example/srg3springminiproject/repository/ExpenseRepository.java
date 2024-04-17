@@ -3,7 +3,6 @@ package org.example.srg3springminiproject.repository;
 import org.apache.ibatis.annotations.*;
 import org.example.srg3springminiproject.model.Expense;
 import org.example.srg3springminiproject.model.dto.request.ExpenseRequest;
-import org.example.srg3springminiproject.service.ExpenseService;
 
 import java.util.List;
 
