@@ -12,8 +12,10 @@ public interface ExpenseRepository {
         select * from expenses_tb LIMIT #{limit} OFFSET #{offset};
     """)
     @Results(id="expenseMapping", value = {
-            @Result(property = "userId", column = "user_id"),
-            @Result(property = "categoryId", column = "categoryId"),
+//            @Result(property = "userId", column = "user_id"),
+//            @Result(property = "categoryId", column = "categoryId"),
+            @Result(property = "expenseId", column = "expense_id"),
+
     })
     List<Expense> getAllExpense(int offset, int limit, String sortBy, boolean orderBy);
 

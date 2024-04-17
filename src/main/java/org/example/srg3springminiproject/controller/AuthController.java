@@ -46,7 +46,6 @@ public class AuthController {
     @PutMapping("/verify-otp")
     public ResponseEntity<APIResponse<String>> verifyOtp(@RequestParam @Positive String otpCode) {
         if (userService.verifyOtp(otpCode)) {
-
             APIResponse<String> response = APIResponse.<String>builder()
                     .message("OTP verified successfully")
                     .status(HttpStatus.OK)
@@ -93,17 +92,7 @@ public class AuthController {
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    @GetMapping("/profile")
-    public ResponseEntity<?> getUserProfile() {
-        String currentUserEmail = userService.getUsernameOfCurrentUser();
-        User userProfile = userService.getUserCurrentByEmail(currentUserEmail);
-        if (userProfile != null) {
-            return ResponseEntity.ok(userProfile);
-        }
-        return ResponseEntity.badRequest().body(new APIResponse<>(
-                "You are not logged in", null, HttpStatus.BAD_REQUEST, new Date()
-        ));
-    }
+
 
 
     public static boolean isValidPassword(String password) {

@@ -9,23 +9,31 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-
+    private final UserServiceImpl userServiceImpl;
     private final CategoryRepository categoryRepository;
+
     @Override
     public List<Category> findAllCategory(Integer offset, Integer limit) {
-        offset=(offset-1)*limit;
-        return categoryRepository.findAllCategory(offset,limit);
+        offset = (offset - 1) * limit;
+        return categoryRepository.findAllCategory(offset, limit);
     }
 
     @Override
     public Category findCategoryById(Integer id) {
+
         return categoryRepository.findCategoryById(id);
     }
 
     @Override
     public Category insertCategory(CategoryRequest categoryRequest) {
-        Integer categoryId=categoryRepository.insertCategory(categoryRequest);
-        return findCategoryById(categoryId);
+
+       long UserId = userServiceImpl.getUsernameOfCurrentUser();
+        System.out.println(UserId);
+        Category categoryId=categoryRepository.insertCategory(categoryRequest,UserId);
+        return categoryId;
+
+
     }
+
 
 }
