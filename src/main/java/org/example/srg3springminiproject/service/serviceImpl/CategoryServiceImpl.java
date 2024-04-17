@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
        long UserId = userServiceImpl.getUsernameOfCurrentUser();
         System.out.println(UserId);
-        Category categoryId=categoryRepository.insertCategory(categoryRequest,UserId);
+        Category categoryId = categoryRepository.insertCategory(categoryRequest,UserId);
         return categoryId;
 
 
