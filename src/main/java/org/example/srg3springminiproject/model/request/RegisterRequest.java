@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
     @NotNull
     @NotBlank
-    @Email
+    @Email(message = "Invalid Email Input")
     private String email;
     @NotNull
     @NotBlank
