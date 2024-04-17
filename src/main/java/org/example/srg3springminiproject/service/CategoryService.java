@@ -1,9 +1,6 @@
 package org.example.srg3springminiproject.service;
-
-
 import org.example.srg3springminiproject.model.Category;
 import org.example.srg3springminiproject.model.request.CategoryRequest;
-
 import java.util.List;
 
 public interface CategoryService {
@@ -15,4 +12,5 @@ public interface CategoryService {
     Category insertCategory(CategoryRequest categoryRequest);
 
 //    Category saveCategory(CategoryRequest categoryRequest);
+
 }
