@@ -1,6 +1,6 @@
 package org.example.srg3springminiproject.controller;
 import org.example.srg3springminiproject.model.Expense;
-import org.example.srg3springminiproject.model.dto.request.ExpenseRequest;
+import org.example.srg3springminiproject.model.request.ExpenseRequest;
 import org.example.srg3springminiproject.model.response.APIResponse;
 import org.example.srg3springminiproject.service.ExpenseService;
 import org.springframework.http.HttpStatus;
@@ -60,12 +60,12 @@ public class ExpenseController {
             );
         }
 
-        @PutMapping
-        public ResponseEntity<APIResponse<Expense>> updateExpense(@RequestBody ExpenseRequest expenseRequest){
+        @PutMapping("/{id}")
+        public ResponseEntity<APIResponse<Expense>> updateExpense( @RequestBody ExpenseRequest expenseRequest,@PathVariable Integer id){
             return  ResponseEntity.status(HttpStatus.OK).body(
                     new APIResponse<>(
                           "Update Expense IS Successful",
-                          expenseService.updateExpense(expenseRequest),
+                          expenseService.updateExpense(id,expenseRequest),
                           HttpStatus.OK,
                           new Date()
                     )

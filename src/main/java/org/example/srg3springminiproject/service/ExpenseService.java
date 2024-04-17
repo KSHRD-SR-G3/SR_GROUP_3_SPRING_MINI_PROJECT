@@ -1,7 +1,7 @@
 package org.example.srg3springminiproject.service;
 
 import org.example.srg3springminiproject.model.Expense;
-import org.example.srg3springminiproject.model.dto.request.ExpenseRequest;
+import org.example.srg3springminiproject.model.request.ExpenseRequest;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface ExpenseService {
 
     Expense saveExpense(ExpenseRequest expenseRequest);
 
-    Expense updateExpense(ExpenseRequest expenseRequest);
+    Expense updateExpense(Integer id, ExpenseRequest expenseRequest);
 }

@@ -2,7 +2,7 @@ package org.example.srg3springminiproject.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.example.srg3springminiproject.model.Expense;
-import org.example.srg3springminiproject.model.dto.request.ExpenseRequest;
+import org.example.srg3springminiproject.model.request.ExpenseRequest;
 
 import java.util.List;
 
@@ -26,14 +26,15 @@ public interface ExpenseRepository {
     Expense findExpenseById(Integer id);
 
 
-    @Select("""
+    @Select(""" 
             INSERT INTO  expenses_tb (amount,description,date,category_id,user_id)  VALUES (#{expense.amount},#{expense.description},#{expense.date},#{expense.categoryId},#{UserId} )RETURNING *;
     """)
     @ResultMap("expenseMapper")
     Expense saveExpense(@Param("expense") ExpenseRequest expenseRequest,long UserId);
 
     @Select("""
-            
+            UPDATE  expenses_tb SET amount=#{expense.amount}, description=#{expense.description},date=#{expense.date},category_id=#{expense.categoryId},user_id=#{UserId} WHERE expense_id=#{id} RETURNING *;
     """)
-    Expense updateExpense(ExpenseRequest expenseRequest);
+    @ResultMap("expenseMapper")
+    Expense updateExpense(Integer id , @Param("expense") ExpenseRequest expenseRequest,long UserId);
 }
