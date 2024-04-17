@@ -1,5 +1,4 @@
 package org.example.srg3springminiproject.controller;
-
 import org.example.srg3springminiproject.model.Category;
 import org.example.srg3springminiproject.model.Expense;
 import org.example.srg3springminiproject.model.response.APIResponse;
@@ -13,6 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
+
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+@SecurityRequirement(name = "bearerAuth")
 
 public class CategoryController {
 

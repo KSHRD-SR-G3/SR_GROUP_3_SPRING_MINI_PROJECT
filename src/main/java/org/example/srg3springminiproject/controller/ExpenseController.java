@@ -1,5 +1,6 @@
 package org.example.srg3springminiproject.controller;
 
+
 import org.example.srg3springminiproject.model.Expense;
 import org.example.srg3springminiproject.model.dto.request.ExpenseRequest;
 import org.example.srg3springminiproject.model.response.APIResponse;
@@ -9,8 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("api/v1/expense")
 public class ExpenseController {
@@ -29,7 +33,7 @@ public class ExpenseController {
                             "Find All Expense Successful",
                             expenseService.findAllExpense(offset,limit),
                             HttpStatus.OK,
-                            LocalDateTime.now()
+                           new Date()
                     )
             );
         }
@@ -41,7 +45,7 @@ public class ExpenseController {
                             "Find Expense By Id Is Successful",
                             expenseService.findExpenseById(id),
                             HttpStatus.OK,
-                            LocalDateTime.now()
+                           new Date()
 
                     )
             );
@@ -55,7 +59,7 @@ public class ExpenseController {
                             "Insert New Expense Is Successful",
                             expenseService.saveExpense(expenseRequest),
                             HttpStatus.OK,
-                            LocalDateTime.now()
+                            new Date()
                     )
             );
         }
@@ -67,7 +71,7 @@ public class ExpenseController {
                           "Update Expense IS Successful",
                           expenseService.updateExpense(expenseRequest),
                           HttpStatus.OK,
-                          LocalDateTime.now()
+                          new Date()
                     )
             );
         }
