@@ -2,7 +2,9 @@ package org.example.srg3springminiproject.controller;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import org.example.srg3springminiproject.exception.NotFoundException;
 import org.example.srg3springminiproject.model.User;
 import org.example.srg3springminiproject.model.request.ForgetRequest;
 import org.example.srg3springminiproject.model.request.LoginRequest;
@@ -13,6 +15,7 @@ import org.example.srg3springminiproject.model.response.UserResponse;
 import org.example.srg3springminiproject.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -44,7 +47,6 @@ public class AuthController {
             ));
         }
     }
-
     @PutMapping("/verify-otp")
     public ResponseEntity<APIResponse<String>> verifyOtp(@RequestParam String otpCode) {
         if (userService.verifyOtp(otpCode)) {
@@ -55,7 +57,7 @@ public class AuthController {
                     .payload("Your OTP has been successfully verified.")
                     .build();
             return ResponseEntity.ok(response);
-        } else {
+        } else  {
             APIResponse<String> response = APIResponse.<String>builder()
                     .message("Invalid or expired OTP code: "+ new Date())
                     .status(HttpStatus.BAD_REQUEST)
