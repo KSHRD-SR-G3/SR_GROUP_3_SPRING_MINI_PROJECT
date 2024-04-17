@@ -20,6 +20,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/v1/files")
 @AllArgsConstructor
+
 public class AppFileController {
     private final AppFileService appFileService;
 
@@ -43,9 +44,13 @@ public class AppFileController {
     public ResponseEntity<?> getFileByFileName(@RequestParam String fileName) throws IOException {
         Resource resource = appFileService.getFileByFileName(fileName);
         //we need header to show profile_image
+        MediaType mediaType;
+        if(fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".gif")){
+            mediaType = MediaType.IMAGE_PNG;}
+        else {mediaType = MediaType.APPLICATION_OCTET_STREAM;}
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + fileName + "\"")
-                .contentType(MediaType.IMAGE_JPEG)
+                .contentType(mediaType)
                 .body(resource);
     }
 

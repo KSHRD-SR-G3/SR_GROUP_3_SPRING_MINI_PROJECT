@@ -19,7 +19,7 @@ public interface UserService {
 
     UserResponse forgetPassword(ForgetRequest forgetRequest, String email);
 
-    String getUsernameOfCurrentUser();
+    Long getUsernameOfCurrentUser();
 
-    User getUserCurrentByEmail(String currentUserEmail);
+//    User getUserCurrentByEmail(String currentUserEmail);
 }

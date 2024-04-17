@@ -1,8 +1,8 @@
 package org.example.srg3springminiproject.controller;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.example.srg3springminiproject.model.User;
 import org.example.srg3springminiproject.model.request.ForgetRequest;
@@ -21,11 +21,14 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/v1/Auth")
 @AllArgsConstructor
-@SecurityRequirement(name = "bearerAuth")
+
 public class AuthController {
     private final UserService userService;
     @PostMapping("/register")
-    public ResponseEntity<APIResponse<UserResponse>> register(@RequestBody RegisterRequest registerRequest) throws MessagingException {
+    public ResponseEntity<APIResponse<UserResponse>> register(@RequestBody @Valid  RegisterRequest registerRequest) throws MessagingException {
+        if (!isValidPassword(registerRequest.getPassword())) {
+            return ResponseEntity.badRequest().body(new APIResponse<>("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character.", null, HttpStatus.BAD_REQUEST, new Date()));
+        }
         UserResponse userResponse = userService.register(registerRequest);
         System.out.println(userResponse);
         System.out.println(registerRequest);
@@ -34,22 +37,16 @@ public class AuthController {
         ));
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid() LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody @Valid  LoginRequest loginRequest) {
         AuthResponse response = userService.login(loginRequest);
-        if (response != null && response.getAccessToken() != null) {
-            return ResponseEntity.ok().body(new APIResponse<>(
-                    "Login Successful", response.getAccessToken(), HttpStatus.OK, new Date()
-            ));
-        } else {
-            return ResponseEntity.badRequest().body(new APIResponse<>(
-                    "Login Failed, Please try again", null, HttpStatus.BAD_REQUEST, new Date()
-            ));
-        }
+        System.out.println(response);
+        System.out.println(loginRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
     @PutMapping("/verify-otp")
-    public ResponseEntity<APIResponse<String>> verifyOtp(@RequestParam String otpCode) {
+    public ResponseEntity<APIResponse<String>> verifyOtp(@RequestParam @Positive String otpCode) {
         if (userService.verifyOtp(otpCode)) {
+
             APIResponse<String> response = APIResponse.<String>builder()
                     .message("OTP verified successfully")
                     .status(HttpStatus.OK)
@@ -68,7 +65,7 @@ public class AuthController {
         }
     }
     @PostMapping("/resend-otp")
-    public ResponseEntity<APIResponse<String>> resendOtp(@RequestParam String email) {
+    public ResponseEntity<APIResponse<String>> resendOtp(@RequestParam @Valid String email) {
         String message = userService.resendOtp(email);
         HttpStatus status = HttpStatus.OK;
         if (!message.equals("OTP resent successfully.")) {
@@ -83,7 +80,10 @@ public class AuthController {
     }
 
     @PutMapping("/forget-password")
-    public ResponseEntity<APIResponse<UserResponse>> forgetPassword(@RequestBody ForgetRequest forgetRequest, @RequestParam String email) {
+    public ResponseEntity<APIResponse<UserResponse>> forgetPassword(@RequestBody @Valid ForgetRequest forgetRequest, @RequestParam @Valid String email) {
+        if (!isValidPassword(forgetRequest.getPassword())) {
+            return ResponseEntity.badRequest().body(new APIResponse<>("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character.", null, HttpStatus.BAD_REQUEST, new Date()));
+        }
         UserResponse user  = userService.forgetPassword(forgetRequest, email);
         APIResponse<UserResponse> response = APIResponse.<UserResponse>builder()
                 .message("Your Password is Changed Successfully: ")
@@ -93,17 +93,11 @@ public class AuthController {
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    @GetMapping("/profile")
-    public ResponseEntity<?> getUserProfile() {
-        String currentUserEmail = userService.getUsernameOfCurrentUser();
-        User userProfile = userService.getUserCurrentByEmail(currentUserEmail);
-        if (userProfile != null) {
-            return ResponseEntity.ok(userProfile);
-        }
-        return ResponseEntity.badRequest().body(new APIResponse<>(
-                "You are not logged in", null, HttpStatus.BAD_REQUEST, new Date()
-        ));
-    }
 
+
+
+    public static boolean isValidPassword(String password) {
+        return password.matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$");
+    }
 
 }
