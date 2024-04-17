@@ -11,7 +11,7 @@ CREATE TABLE categories_tb (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR (100),
     description VARCHAR (250),
-    user_id INT UNIQUE,
+    user_id INT,
     FOREIGN KEY (user_id) REFERENCES users_tb (user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
