@@ -27,9 +27,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category insertCategory(CategoryRequest categoryRequest) {
        long UserId = userServiceImpl.getUsernameOfCurrentUser();
-        System.out.println(UserId);
-        Category categoryId=categoryRepository.insertCategory(categoryRequest,UserId);
-        return categoryId;
+//        System.out.println(UserId);
+        return categoryRepository.insertCategory(categoryRequest, UserId);
     }
 
 }

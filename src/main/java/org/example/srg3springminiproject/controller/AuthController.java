@@ -46,7 +46,6 @@ public class AuthController {
     @PutMapping("/verify-otp")
     public ResponseEntity<APIResponse<String>> verifyOtp(@RequestParam @Positive String otpCode) {
         if (userService.verifyOtp(otpCode)) {
-
             APIResponse<String> response = APIResponse.<String>builder()
                     .message("OTP verified successfully")
                     .status(HttpStatus.OK)
