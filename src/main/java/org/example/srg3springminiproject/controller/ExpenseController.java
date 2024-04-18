@@ -1,5 +1,7 @@
 package org.example.srg3springminiproject.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.example.srg3springminiproject.model.Expense;
 import org.example.srg3springminiproject.model.response.APIResponse;
 import org.example.srg3springminiproject.service.ExpenseService;
@@ -22,27 +24,31 @@ public class ExpenseController {
 
     @GetMapping
     public ResponseEntity<APIResponse<List<Expense>>> getAllExpense(@RequestParam(defaultValue = "1") int offset,
-                                                                    @RequestParam(defaultValue = "3") int limit,
+                                                                    @RequestParam(defaultValue = "5") int limit,
                                                                     @RequestParam(defaultValue = "expense_id") String sortBy,
-                                                                    @RequestParam(defaultValue = "false") boolean orderBy){
+                                                                    @Parameter(description = "orderBy", schema = @Schema(allowableValues={"False", "True"}))
+                                                                    @RequestParam String orderBy) {
 
-//        if (!orderBy) {
-//            APIResponse<List<Expense>> errorResponse = APIResponse.<List<Expense>>builder()
-//                    .message("Invalid orderBy parameter. It should be 'asc' or 'desc'.")
-//                    .status(HttpStatus.BAD_REQUEST)
-//                    .creationDate(new Date())
-//                    .build();
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-//        }
+        APIResponse<List<Expense>> response;
+        if (orderBy != null) {
+            response = APIResponse.<List<Expense>>builder()
+                    .message("All expenses have been successfully fetched.")
+                    .payload(expenseService.getAllExpense(offset, limit, sortBy, "ASC"))
+                    .status(HttpStatus.OK)
+                    .creationDate(new Date())
+                    .build();
+        } else {
+            response = APIResponse.<List<Expense>>builder()
+                    .message("All expenses have been successfully fetched.")
+                    .payload(expenseService.getAllExpense(offset, limit, sortBy, "DESC"))
+                    .status(HttpStatus.OK)
+                    .creationDate(new Date())
+                    .build();
+        }
 
-        APIResponse<List<Expense>> response = APIResponse.<List<Expense>>builder()
-                .message("All expenses have been successfully fetched.")
-                .payload(expenseService.getAllExpense(offset, limit,sortBy, false))
-                .status(HttpStatus.OK)
-                .creationDate(new Date())
-                .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<APIResponse<Expense>> deleteExpense(@PathVariable int id){
         expenseService.deleteExpense(id);

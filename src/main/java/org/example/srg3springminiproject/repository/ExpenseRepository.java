@@ -9,15 +9,16 @@ import java.util.List;
 public interface ExpenseRepository {
 
     @Select("""
-        select * from expenses_tb LIMIT #{limit} OFFSET #{offset};
+        select * from expenses_tb order by ${sortBy} ${orderByStr} LIMIT #{limit} OFFSET #{offset};
+        
     """)
     @Results(id="expenseMapping", value = {
-//            @Result(property = "userId", column = "user_id"),
-//            @Result(property = "categoryId", column = "categoryId"),
+            @Result(property = "user",column = "user_id",one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById")),
+            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryByCategoryId")),
             @Result(property = "expenseId", column = "expense_id"),
 
     })
-    List<Expense> getAllExpense(int offset, int limit, String sortBy, boolean orderBy);
+    List<Expense> getAllExpense(int offset, int limit, String sortBy,String orderByStr);
 
 
     @Select("""
