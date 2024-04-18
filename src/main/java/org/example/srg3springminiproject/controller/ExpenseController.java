@@ -28,29 +28,20 @@ public class ExpenseController {
     @GetMapping
     public ResponseEntity<APIResponse<List<Expense>>> getAllExpense(@RequestParam(defaultValue = "1") int offset,
                                                                     @RequestParam(defaultValue = "5") int limit,
-                                                                    @RequestParam(defaultValue = "expense_id") String sortBy,
+                                                                    @RequestParam String sortBy,
                                                                     @Parameter(description = "orderBy", schema = @Schema(allowableValues={"False", "True"}))
-                                                                    @RequestParam String orderBy) {
+                                                                    @RequestParam(required = false, defaultValue = "False") String orderBy) {
 
-        APIResponse<List<Expense>> response;
-        if (orderBy != null) {
-            response = APIResponse.<List<Expense>>builder()
-                    .message("All expenses have been successfully fetched.")
-                    .payload(expenseService.getAllExpense(offset, limit, sortBy, "ASC"))
-                    .status(HttpStatus.OK)
-                    .creationDate(new Date())
-                    .build();
-        } else {
-            response = APIResponse.<List<Expense>>builder()
-                    .message("All expenses have been successfully fetched.")
-                    .payload(expenseService.getAllExpense(offset, limit, sortBy, "DESC"))
-                    .status(HttpStatus.OK)
-                    .creationDate(new Date())
-                    .build();
-        }
+        APIResponse<List<Expense>> response = APIResponse.<List<Expense>>builder()
+                .message("All expenses have been successfully fetched.")
+                .payload(expenseService.getAllExpense(offset, limit, sortBy, orderBy.equalsIgnoreCase("True")? "DESC" : "ASC"))
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<APIResponse<?>> deleteExpense(@PathVariable Integer id){
