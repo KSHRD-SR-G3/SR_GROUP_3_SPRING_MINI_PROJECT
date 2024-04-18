@@ -75,4 +75,43 @@ public class CategoryController {
    }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //update category
+    @PutMapping("/{id}")
+    public ResponseEntity<APIResponse<Category>> updateCategory(@PathVariable Integer id, @RequestBody CategoryRequest categoryRequest){
+        //return categoryService.updateCategory(id,categoryRequest);
+        APIResponse<Category> response = APIResponse.<Category>builder()
+                .message("Update  Category Success!")
+                .payload(categoryService.updateCategory(id, categoryRequest))
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    //Delete Category
+    @DeleteMapping("/{id}")
+    public String removeCategory(@PathVariable Integer id){
+        return categoryService.removeCategory(id);
+    }
 }
+
+

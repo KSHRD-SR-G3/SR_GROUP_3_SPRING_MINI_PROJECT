@@ -52,4 +52,32 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+//
+
+    @Override
+    public Category updateCategory(Integer id, CategoryRequest categoryRequest) {
+        return categoryRepository.updateCategory(id,categoryRequest);
+    }
+
+    @Override
+    public String removeCategory(Integer id) {
+        Category isSuccess = categoryRepository.removeCategory(id);
+        if (isSuccess != null){
+            return "Success";
+        }
+        return  "fail";
+    }
+
+
 }

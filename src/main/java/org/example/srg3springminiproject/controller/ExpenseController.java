@@ -1,4 +1,8 @@
 package org.example.srg3springminiproject.controller;
+
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import io.swagger.v3.oas.annotations.Parameter;
 import org.example.srg3springminiproject.model.Expense;
 import org.example.srg3springminiproject.model.request.ExpenseRequest;
@@ -15,11 +19,50 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RestController
 @RequestMapping("api/v1/expense")
 public class ExpenseController {
-        private final ExpenseService expenseService;
+    public final ExpenseService expenseService;
 
-        public ExpenseController(ExpenseService expenseService) {
-            this.expenseService = expenseService;
+    public ExpenseController(ExpenseService expenseService) {
+        this.expenseService = expenseService;
+    }
+
+    @GetMapping
+    public ResponseEntity<APIResponse<List<Expense>>> getAllExpense(@RequestParam(defaultValue = "1") int offset,
+                                                                    @RequestParam(defaultValue = "5") int limit,
+                                                                    @RequestParam(defaultValue = "expense_id") String sortBy,
+                                                                    @Parameter(description = "orderBy", schema = @Schema(allowableValues={"False", "True"}))
+                                                                    @RequestParam String orderBy) {
+
+        APIResponse<List<Expense>> response;
+        if (orderBy != null) {
+            response = APIResponse.<List<Expense>>builder()
+                    .message("All expenses have been successfully fetched.")
+                    .payload(expenseService.getAllExpense(offset, limit, sortBy, "ASC"))
+                    .status(HttpStatus.OK)
+                    .creationDate(new Date())
+                    .build();
+        } else {
+            response = APIResponse.<List<Expense>>builder()
+                    .message("All expenses have been successfully fetched.")
+                    .payload(expenseService.getAllExpense(offset, limit, sortBy, "DESC"))
+                    .status(HttpStatus.OK)
+                    .creationDate(new Date())
+                    .build();
         }
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<APIResponse<?>> deleteExpense(@PathVariable Integer id){
+        expenseService.deleteExpense(id);
+        APIResponse<Expense> response = APIResponse.<Expense>builder()
+                .message("The expense has been successfully deleted.")
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
 
 
 

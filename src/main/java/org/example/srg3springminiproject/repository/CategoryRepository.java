@@ -37,4 +37,23 @@ public interface CategoryRepository {
     """)
     @ResultMap("categoryMapper")
     Category insertCategory(@Param("category") CategoryRequest categoryRequest, long userId);
+
+
+
+
+
+//    Update category to database
+    @Select("""
+    UPDATE categories_tb set name = (#{category.name}),description = (#{category.description}) WHERE category_id = #{id} RETURNING *
+""")
+    @ResultMap("categoryMapper")
+    Category updateCategory(Integer id,@Param("category") CategoryRequest categoryRequest);
+
+    //Delete category from database
+    @Select("""
+            DELETE  FROM categories_tb WHERE category_id = #{id} RETURNING *;
+""")
+    @ResultMap("categoryMapper")
+    Category removeCategory(Integer id);
+
 }

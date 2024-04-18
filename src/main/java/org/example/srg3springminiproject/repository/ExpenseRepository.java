@@ -9,111 +9,48 @@ import java.util.List;
 @Mapper
 public interface ExpenseRepository {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Select("""
-        SELECT *FROM expenses_tb LIMIT #{limit} OFFSET #{offset};
+
+        select * from expenses_tb order by ${sortBy} ${orderByStr} LIMIT #{limit} OFFSET #{offset};
+        
     """)
-    @Results(id="expenseMapper",value = {
-            @Result(property = "expenseId",column = "expense_id"),
+    @Results(id="expenseMapping", value = {
             @Result(property = "user",column = "user_id",one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById")),
-            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryByCategoryId"))
+            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryByCategoryId")),
+            @Result(property = "expenseId", column = "expense_id"),
+
     })
-    List<Expense> findAllExpense(Integer offset, Integer limit);
+    List<Expense> getAllExpense(int offset, int limit, String sortBy,String orderByStr);
+
+
 
     @Select("""
             SELECT *FROM expenses_tb WHERE expense_id= #{id}
     """)
-    @ResultMap("expenseMapper")
+    @ResultMap("expenseMapping")
     Expense findExpenseById(Integer id);
+
 
 
     @Select(""" 
             INSERT INTO  expenses_tb (amount,description,date,category_id,user_id)  VALUES (#{expense.amount},#{expense.description},#{expense.date},#{expense.categoryId},#{UserId} )RETURNING *;
     """)
-    @ResultMap("expenseMapper")
+    @ResultMap("expenseMapping")
     Expense saveExpense(@Param("expense") ExpenseRequest expenseRequest,long UserId);
 
+
+
     @Select("""
-            UPDATE  expenses_tb SET amount=#{expense.amount}, description=#{expense.description},date=#{expense.date},category_id=#{expense.categoryId},user_id=#{UserId} WHERE expense_id=#{id} RETURNING *;
+            UPDATE  expenses_tb SET amount=#{expense.amount}, description=#{expense.description},date=#{expense.date},category_id=#{expense.categoryId},user_id=#{UserId} WHERE expense_id=#{id}
+    RETURNING *;
     """)
-    @ResultMap("expenseMapper")
+    @ResultMap("expenseMapping")
     Expense updateExpense(Integer id , @Param("expense") ExpenseRequest expenseRequest,long UserId);
+
+
+
+    @Select("""
+            DELETE FROM  expenses_tb WHERE expense_id=#{id}
+    """)
+    Boolean deleteExpense(Integer id);
 }
