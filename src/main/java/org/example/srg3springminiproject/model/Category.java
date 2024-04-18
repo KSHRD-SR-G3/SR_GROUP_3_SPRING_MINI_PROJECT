@@ -14,5 +14,5 @@ public class Category {
     private String name;
     private String description;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private UserResponse users;
+    private UserResponse user;
 }

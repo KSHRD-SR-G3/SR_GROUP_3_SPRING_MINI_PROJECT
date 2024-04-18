@@ -17,6 +17,5 @@ public class Expense {
     private String description;
     private LocalDateTime date;
     private Category categories;
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
     private UserResponse user;
 }

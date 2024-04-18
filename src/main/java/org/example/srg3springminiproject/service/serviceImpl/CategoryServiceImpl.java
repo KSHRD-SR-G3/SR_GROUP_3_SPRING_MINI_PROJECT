@@ -24,7 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAllCategory(offset, limit,userId);
     }
 
-
     @Override
     public CategoryResponse findCategoryById(Integer id) {
         long UserId = userServiceImpl.getUsernameOfCurrentUser();
@@ -44,22 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         System.out.println(UserId);
         Category categoryId = categoryRepository.insertCategory(categoryRequest,UserId);
         return categoryId;
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
 
     @Override
     public Category updateCategory(Integer id, CategoryRequest categoryRequest) {
@@ -70,10 +54,9 @@ public class CategoryServiceImpl implements CategoryService {
     public String removeCategory(Integer id) {
         Category isSuccess = categoryRepository.removeCategory(id);
         if (isSuccess != null){
-            return "Success";
+            return "The category has been successfully removed.";
         }
         return  "fail";
     }
-
 
 }

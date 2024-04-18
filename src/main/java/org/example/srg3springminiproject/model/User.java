@@ -25,7 +25,6 @@ public class User implements UserDetails {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-
     @Override
     public String getUsername() {
         return email;
