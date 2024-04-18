@@ -2,8 +2,6 @@ package org.example.srg3springminiproject.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.example.srg3springminiproject.model.Expense;
-import org.example.srg3springminiproject.model.dto.request.ExpenseRequest;
-import org.example.srg3springminiproject.service.ExpenseService;
 
 import java.util.List;
 
@@ -11,28 +9,20 @@ import java.util.List;
 public interface ExpenseRepository {
 
     @Select("""
-        SELECT *FROM expenses_tb LIMIT #{limit} OFFSET #{offset};
+        select * from expenses_tb LIMIT #{limit} OFFSET #{offset};
     """)
-    @Results(id="expenseMapper",value = {
-            @Result(property = "expenseId",column = "expense_id"),
-            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryById"))
+    @Results(id="expenseMapping", value = {
+//            @Result(property = "userId", column = "user_id"),
+//            @Result(property = "categoryId", column = "categoryId"),
+            @Result(property = "expenseId", column = "expense_id"),
+
     })
-    List<Expense> findAllExpense(Integer offset, Integer limit);
-
-    @Select("""
-            SELECT *FROM expenses_tb WHERE expense_id= #{id}
-    """)
-    @ResultMap("expenseMapper")
-    Expense findExpenseById(Integer id);
+    List<Expense> getAllExpense(int offset, int limit, String sortBy, boolean orderBy);
 
 
     @Select("""
-            INSERT INTO  expenses_tb (amount,description,date,category_id)  VALUES (#{expense.amount},#{expense.description},#{expense.date},#{expense.categoryId} )RETURNING *;
+        delete from expenses_tb where expense_id = #{expenseId}
     """)
-    Integer saveExpense(@Param("expense") ExpenseRequest expenseRequest);
-
-    @Select("""
-            
-    """)
-    Expense updateExpense(ExpenseRequest expenseRequest);
+    @ResultMap("expenseMapping")
+    void deleteExpense(int id);
 }
