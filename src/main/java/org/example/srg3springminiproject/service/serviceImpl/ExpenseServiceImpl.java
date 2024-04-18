@@ -95,10 +95,17 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+
+    public List<Expense> getAllExpense(int offset, int limit, String sortBy,String orderByStr) {
+        offset = (offset - 1) * limit;
+        return expenseRepository.getAllExpense(offset,limit,sortBy,orderByStr);
+    }
+    @Override
     public Expense saveExpense(ExpenseRequest expenseRequest) {
         Long UserId = userService.getUsernameOfCurrentUser();
         Expense expenseId = expenseRepository.saveExpense(expenseRequest,UserId);
         return expenseId;
+
     }
 
     @Override
