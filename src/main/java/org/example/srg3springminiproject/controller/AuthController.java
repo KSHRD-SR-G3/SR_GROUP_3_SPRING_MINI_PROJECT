@@ -37,11 +37,12 @@ public class AuthController {
         ));
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid  LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
         AuthResponse response = userService.login(loginRequest);
         System.out.println(response);
-        System.out.println(loginRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse<>(
+                "Login Successful", response, HttpStatus.CREATED,new Date()
+        ));
     }
     @PutMapping("/verify-otp")
     public ResponseEntity<APIResponse<String>> verifyOtp(@RequestParam @Positive String otpCode) {

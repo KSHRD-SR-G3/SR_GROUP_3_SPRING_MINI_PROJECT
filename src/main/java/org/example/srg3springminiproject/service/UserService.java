@@ -21,5 +21,5 @@ public interface UserService {
 
     Long getUsernameOfCurrentUser();
 
-//    User getUserCurrentByEmail(String currentUserEmail);
+
 }
