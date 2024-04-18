@@ -2,12 +2,11 @@ package org.example.srg3springminiproject.controller;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.example.srg3springminiproject.exception.InvalidInputException;
-import org.example.srg3springminiproject.exception.NotFoundException;
-import org.example.srg3springminiproject.model.User;
+
 import org.example.srg3springminiproject.model.request.ForgetRequest;
 import org.example.srg3springminiproject.model.request.LoginRequest;
 import org.example.srg3springminiproject.model.request.RegisterRequest;
@@ -17,7 +16,7 @@ import org.example.srg3springminiproject.model.response.UserResponse;
 import org.example.srg3springminiproject.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -42,8 +41,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
         AuthResponse response = userService.login(loginRequest);
-//        System.out.println(response);
-//        System.out.println(loginRequest);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse<>(
                 "Login Successful", response, HttpStatus.CREATED,new Date()
         ));
@@ -64,14 +62,9 @@ public class AuthController {
     @PutMapping("/forget-password")
     public ResponseEntity<UserResponse> forgetPassword(@RequestBody @Valid ForgetRequest forgetRequest, @RequestParam @Valid String email) {
         if (!isValidPassword(forgetRequest.getPassword())) throw new InvalidInputException("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character.");
-            //return ResponseEntity.badRequest().body(new APIResponse<>("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character.", null, HttpStatus.BAD_REQUEST, new Date()));
+
         UserResponse user  = userService.forgetPassword(forgetRequest, email);
-//        APIResponse<UserResponse> response = APIResponse.<UserResponse>builder()
-//                .message("Your Password is Changed Successfully: ")
-//                .status(HttpStatus.CREATED)
-//                .creationDate(new Date())
-//                .payload(user)
-//                .build();
+
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
