@@ -15,13 +15,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAllCategory(Integer offset, Integer limit) {
         offset = (offset - 1) * limit;
-        return categoryRepository.findAllCategory(offset, limit);
+        long UserId = userServiceImpl.getUsernameOfCurrentUser();
+        return categoryRepository.findAllCategory(offset, limit,UserId);
     }
 
     @Override
     public Category findCategoryById(Integer id) {
-
-        return categoryRepository.findCategoryById(id);
+        long UserId = userServiceImpl.getUsernameOfCurrentUser();
+        return categoryRepository.findCategoryById(id,UserId);
     }
 
     @Override
