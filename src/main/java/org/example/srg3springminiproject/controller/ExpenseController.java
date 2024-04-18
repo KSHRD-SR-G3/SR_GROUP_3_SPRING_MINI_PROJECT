@@ -1,4 +1,5 @@
 package org.example.srg3springminiproject.controller;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.example.srg3springminiproject.model.Expense;
 import org.example.srg3springminiproject.model.request.ExpenseRequest;
 import org.example.srg3springminiproject.model.response.APIResponse;
@@ -23,7 +24,10 @@ public class ExpenseController {
         @GetMapping
         public ResponseEntity<APIResponse<List<Expense>>> findAllExpense(
                 @RequestParam(defaultValue = "1") Integer offset,
-                @RequestParam(defaultValue = "3") Integer limit){
+                @RequestParam(defaultValue = "3") Integer limit
+        )
+
+        {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new APIResponse<>(
                             "Find All Expense Successful",
