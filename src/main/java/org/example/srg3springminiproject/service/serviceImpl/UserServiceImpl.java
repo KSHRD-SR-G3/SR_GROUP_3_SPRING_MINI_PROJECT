@@ -3,6 +3,7 @@ package org.example.srg3springminiproject.service.serviceImpl;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.example.srg3springminiproject.config.PasswordConfig;
+import org.example.srg3springminiproject.exception.InvalidInputException;
 import org.example.srg3springminiproject.exception.NotFoundException;
 import org.example.srg3springminiproject.jwt.JWTService;
 import org.example.srg3springminiproject.model.Otp;
@@ -46,10 +47,10 @@ public class UserServiceImpl implements UserService {
     public UserResponse register(RegisterRequest registerRequest) throws MessagingException {
         User checkEmail = userRepository.getUserByEmail(registerRequest.getEmail());
         if(checkEmail != null) {
-            throw new IllegalArgumentException("Email already register, Please enter another email");
+            throw new InvalidInputException("Email already register, Please enter another email");
         }
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword()) || registerRequest.getPassword().length() < 8 ) {
-            throw new IllegalArgumentException("Passwords do not match or have at least 8 characters");
+            throw new InvalidInputException("Passwords do not match or have at least 8 characters");
         } else {
             registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         }
@@ -78,17 +79,14 @@ public class UserServiceImpl implements UserService {
             if (user != null) {
                 Otp latestOtp = otpRepository.getOtpByUserId(user.getUserId());
                 if (latestOtp == null || !latestOtp.isVerified()) throw new NotFoundException("Your account is not verified yet, please try again.");
-                    //return new AuthResponse("");
 
                 if (!passwordConfig.passwordEncoder().matches(loginRequest.getPassword(), userDetails.getPassword())) throw new NotFoundException("Passwords do not match, please enter correct password");
-                    //return new AuthResponse("");
 
                 String token = jwtService.generateToken(userDetails.getUsername());
                 return new AuthResponse(token);
             }
-        }
-        //return new AuthResponse("User not found with email " + loginRequest.getEmail());
-        throw new NotFoundException("User not found with email " + loginRequest.getEmail());
+        }throw new NotFoundException("User not found with email " + loginRequest.getEmail());
+
     }
 
     @Override
@@ -106,20 +104,21 @@ public class UserServiceImpl implements UserService {
                     }
                     return true;
                 }
-            } else {
-                System.out.println("The OTP has expired: " + expirationTime);
-                return false;
+//            } else {
+//                System.out.println("The OTP has expired: " + expirationTime);
+//                return false;
+//            }
+                throw new NotFoundException("OTP code is Invalid or Expiration, please try again.");
             }
         }
-        return false;
+        //return false;
+            throw new NotFoundException("Your account is already verified");
     }
 
     @Override
     public String resendOtp(String email) {
         User user = userRepository.getUserByEmail(email);
-        if (user == null) {
-            return "User with " + email + " not found.";
-        }
+        if (user == null) throw new NotFoundException("user with email " + email + " not found.");
         String newOtpCode = otpUtil.generateOtp();
         try {
             emailUtil.sendOtpEmail(email, newOtpCode);
@@ -127,9 +126,7 @@ public class UserServiceImpl implements UserService {
             return "Failed to send OTP email. Please try again later.";
         }
         Otp existingOtp = otpRepository.getLatestUnverifiedOtpByEmail(email);
-        if (existingOtp == null) {
-            return "Failed to Resend OTP, Your Account are already Verify";
-        }
+        if (existingOtp == null) throw new NotFoundException("Failed to Resend OTP, Your Account are already Verify");
         existingOtp.setOtpCode(newOtpCode);
         existingOtp.setIssuedAt(new Timestamp(System.currentTimeMillis()));
         existingOtp.setExpirationTime(calculateExpirationTime());
@@ -142,16 +139,16 @@ public class UserServiceImpl implements UserService {
         // Check if the email exists in the database
         User user = userRepository.getUserByEmail(email);
         if (user == null) {
-            throw new IllegalArgumentException("Email not found for update password");
+            throw new NotFoundException("Email not found for update password");
         }
         // Check if the email is verified using OTP
         Otp latestOtp = otpRepository.getOtpByUserId(user.getUserId());
         if (latestOtp == null || !latestOtp.isVerified()) {
-            throw new IllegalArgumentException("This Email is not verified for updating the password, please verify your email first.");
+            throw new InvalidInputException("This Email is not verified for updating the password, please verify your email first.");
         }
         // Validate the new password and confirm password
         if (!forgetRequest.getPassword().equals(forgetRequest.getConfirmPassword()) || forgetRequest.getPassword().length() < 8) {
-            throw new IllegalArgumentException("Passwords do not match or password length is less than 8 characters");
+            throw new InvalidInputException("Passwords do not match or password length is less than 8 characters");
         }
 
         // Update the user's password
@@ -166,12 +163,11 @@ public class UserServiceImpl implements UserService {
         return new Timestamp(expirationTimeMillis);
     }
     @Override
-    public String getUsernameOfCurrentUser() {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+    public Long getUsernameOfCurrentUser() {
+            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal();
-            String username = userDetails.getUsername();
-            System.out.println(username);
-            return username;
+            Long userId = userDetails.getUserId();
+            System.out.println(userId);
+            return userId;
     }
-
 }

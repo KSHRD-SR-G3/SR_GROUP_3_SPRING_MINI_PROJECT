@@ -1,29 +1,30 @@
 package org.example.srg3springminiproject.exception;
 
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
 public class GlobalException {
-    @ExceptionHandler(NotFoundException.class)
-    public ProblemDetail handleNotFoundException(NotFoundException e) {
+    @ExceptionHandler(org.example.srg3springminiproject.exception.NotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleNotFoundException(NotFoundException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND,
-                e.getMessage()
+                ex.getMessage()
         );
         problemDetail.setTitle("Not Found");
-        problemDetail.setProperty("dateTime", LocalDateTime.now());
-        return problemDetail;
+        problemDetail.setProperty("dateTime", new Date());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
