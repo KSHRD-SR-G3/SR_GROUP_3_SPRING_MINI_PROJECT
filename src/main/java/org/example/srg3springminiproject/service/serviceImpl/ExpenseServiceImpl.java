@@ -2,6 +2,7 @@ package org.example.srg3springminiproject.service.serviceImpl;
 
 import lombok.AllArgsConstructor;
 import org.example.srg3springminiproject.model.Expense;
+
 import org.example.srg3springminiproject.model.request.ExpenseRequest;
 import org.example.srg3springminiproject.repository.ExpenseRepository;
 import org.example.srg3springminiproject.service.ExpenseService;
@@ -37,7 +38,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Expense updateExpense(Integer id, ExpenseRequest expenseRequest) {
-        Long UserId= userService.getUsernameOfCurrentUser();
+        Long UserId = userService.getUsernameOfCurrentUser();
         Expense expenseId = expenseRepository.updateExpense(id,expenseRequest,UserId);
         return expenseId;
     }

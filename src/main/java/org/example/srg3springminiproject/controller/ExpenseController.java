@@ -24,56 +24,49 @@ public class ExpenseController {
         @GetMapping
         public ResponseEntity<APIResponse<List<Expense>>> findAllExpense(
                 @RequestParam(defaultValue = "1") Integer offset,
-                @RequestParam(defaultValue = "3") Integer limit
-        )
-
+                @RequestParam(defaultValue = "3") Integer limit)
         {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new APIResponse<>(
-                            "Find All Expense Successful",
-                            expenseService.findAllExpense(offset,limit),
-                            HttpStatus.OK,
-                           new Date()
-                    )
-            );
+            APIResponse<List<Expense>> response = APIResponse.<List<Expense>>builder()
+                    .message("All expenses have been successfully fetched.")
+                    .payload(expenseService.findAllExpense(offset, limit))
+                    .status(HttpStatus.OK)
+                    .creationDate(new Date())
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
         @GetMapping("/{id}")
         public ResponseEntity<APIResponse<Expense>> findExpenseById(@PathVariable Integer id){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new APIResponse<>(
-                            "Find Expense By Id Is Successful",
-                            expenseService.findExpenseById(id),
-                            HttpStatus.OK,
-                           new Date()
-
-                    )
-            );
+            APIResponse<Expense> response= APIResponse.<Expense>builder()
+                    .message("Get expense by id have been successfully ")
+                    .payload(expenseService.findExpenseById(id))
+                    .status(HttpStatus.OK)
+                    .creationDate(new Date())
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
 
         @PostMapping
         public ResponseEntity<APIResponse<Expense>>  saveExpense(@RequestBody ExpenseRequest expenseRequest){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new APIResponse<>(
-                            "Insert New Expense Is Successful",
-                            expenseService.saveExpense(expenseRequest),
-                            HttpStatus.OK,
-                            new Date()
-                    )
-            );
+            APIResponse<Expense> response = APIResponse.<Expense>builder()
+                    .message("Add new expense have been successfully")
+                    .payload(expenseService.saveExpense(expenseRequest))
+                    .status(HttpStatus.CREATED)
+                    .creationDate(new Date())
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
         @PutMapping("/{id}")
         public ResponseEntity<APIResponse<Expense>> updateExpense( @RequestBody ExpenseRequest expenseRequest,@PathVariable Integer id){
-            return  ResponseEntity.status(HttpStatus.OK).body(
-                    new APIResponse<>(
-                          "Update Expense IS Successful",
-                          expenseService.updateExpense(id,expenseRequest),
-                          HttpStatus.OK,
-                          new Date()
-                    )
-            );
+           APIResponse<Expense> response = APIResponse.<Expense>builder()
+                   .message("Update on expense have been successfully ")
+                   .payload(expenseService.updateExpense(id,expenseRequest))
+                   .status(HttpStatus.OK)
+                   .creationDate(new Date())
+                   .build();
+           return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
 
