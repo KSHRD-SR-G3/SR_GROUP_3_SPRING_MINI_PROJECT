@@ -17,82 +17,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     private final UserServiceImpl userService;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public Expense findExpenseById(Integer id) {
         return expenseRepository.findExpenseById(id);
     }
+
 
     @Override
 
@@ -100,6 +29,8 @@ public class ExpenseServiceImpl implements ExpenseService {
         offset = (offset - 1) * limit;
         return expenseRepository.getAllExpense(offset,limit,sortBy,orderByStr);
     }
+
+
     @Override
     public Expense saveExpense(ExpenseRequest expenseRequest) {
         Long UserId = userService.getUsernameOfCurrentUser();
@@ -108,11 +39,18 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     }
 
+
     @Override
     public Expense updateExpense(Integer id, ExpenseRequest expenseRequest) {
         Long UserId = userService.getUsernameOfCurrentUser();
         Expense expenseId = expenseRepository.updateExpense(id,expenseRequest,UserId);
         return expenseId;
+    }
+
+
+    @Override
+    public Boolean deleteExpense(Integer id) {
+        return expenseRepository.deleteExpense(id);
     }
 
 

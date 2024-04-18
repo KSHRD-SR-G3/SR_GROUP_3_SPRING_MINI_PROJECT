@@ -53,7 +53,7 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<APIResponse<Expense>> deleteExpense(@PathVariable int id){
+    public ResponseEntity<APIResponse<?>> deleteExpense(@PathVariable Integer id){
         expenseService.deleteExpense(id);
         APIResponse<Expense> response = APIResponse.<Expense>builder()
                 .message("The expense has been successfully deleted.")
@@ -62,11 +62,7 @@ public class ExpenseController {
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-        private final ExpenseService expenseService;
 
-        public ExpenseController(ExpenseService expenseService) {
-            this.expenseService = expenseService;
-        }
 
 
 

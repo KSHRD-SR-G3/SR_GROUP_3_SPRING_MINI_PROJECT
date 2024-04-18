@@ -13,64 +13,6 @@ public interface ExpenseService {
     List<Expense> getAllExpense(int offset, int limit,  String sortBy,String orderByStr);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     Expense findExpenseById(Integer id);
 
     Expense saveExpense(ExpenseRequest expenseRequest);
@@ -78,4 +20,5 @@ public interface ExpenseService {
     Expense updateExpense(Integer id, ExpenseRequest expenseRequest);
 
 
+    Boolean deleteExpense(Integer id);
 }
