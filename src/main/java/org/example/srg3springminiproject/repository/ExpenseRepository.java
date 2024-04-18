@@ -25,7 +25,7 @@ public interface ExpenseRepository {
 
 
     @Select("""
-            SELECT *FROM expenses_tb WHERE expense_id= #{id} AND user_id =#{userId}
+            SELECT * FROM expenses_tb WHERE expense_id= #{id} AND user_id =#{userId}
     """)
     @ResultMap("expenseMapping")
     Expense findExpenseById(Integer id,Long userId);
