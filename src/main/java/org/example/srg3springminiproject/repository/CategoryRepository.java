@@ -9,28 +9,20 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface CategoryRepository {
-        @Select("""
+    @Select("""
        SELECT * FROM categories_tb LIMIT #{limit} OFFSET #{offset};
     """)
-        @Results(id = "categoryMapper", value = {
-                @Result(property = "categoryId", column = "category_id"),
-                @Result(property = "users", column = "user_id", one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById"))
-        })
-        List<Category> findAllCategory(Integer offset, Integer limit);
-
-        @Select("""
-        SELECT * FROM categories_tb WHERE category_id=#{id};
-    """)
-        @ResultMap("categoryMapper")
-        Category findCategoryById(Integer id);
+    @Results(id = "categoryMapper", value = {
+            @Result(property = "categoryId", column = "category_id"),
+            @Result(property = "users", column = "user_id", one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById"))
+    })
+    List<Category> findAllCategory(Integer offset, Integer limit);
 
     @Select("""
-        SELECT category_id, name, description FROM categories_tb WHERE category_id=#{id};
+        SELECT * FROM categories_tb WHERE category_id=#{id};
     """)
     @ResultMap("categoryMapper")
-    Category findCategoryByCategoryId(Integer id);
-
-
+    Category findCategoryById(Integer id);
 
     @Select("""
         INSERT INTO categories_tb (name,description,user_id) values (#{category.name},#{category.description},#{userId}) RETURNING *;
@@ -38,21 +30,15 @@ public interface CategoryRepository {
     @ResultMap("categoryMapper")
     Category insertCategory(@Param("category") CategoryRequest categoryRequest, long userId);
 
-
-
-
-
-//    Update category to database
     @Select("""
-    UPDATE categories_tb set name = (#{category.name}),description = (#{category.description}) WHERE category_id = #{id} RETURNING *
-""")
+        UPDATE categories_tb set name = (#{category.name}),description = (#{category.description}) WHERE category_id = #{id} RETURNING *
+    """)
     @ResultMap("categoryMapper")
     Category updateCategory(Integer id,@Param("category") CategoryRequest categoryRequest);
 
-    //Delete category from database
     @Select("""
-            DELETE  FROM categories_tb WHERE category_id = #{id} RETURNING *;
-""")
+        DELETE  FROM categories_tb WHERE category_id = #{id} RETURNING *;
+    """)
     @ResultMap("categoryMapper")
     Category removeCategory(Integer id);
 
