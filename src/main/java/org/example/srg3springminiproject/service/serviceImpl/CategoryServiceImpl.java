@@ -24,8 +24,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category insertCategory(CategoryRequest categoryRequest) {
-        Integer categoryId=categoryRepository.insertCategory(categoryRequest);
-        return findCategoryById(categoryId);
+        Category categoryId=categoryRepository.insertCategory(categoryRequest);
+        return categoryId;
     }
 
 }

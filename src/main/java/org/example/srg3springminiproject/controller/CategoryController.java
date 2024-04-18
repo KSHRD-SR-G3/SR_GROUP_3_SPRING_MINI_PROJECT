@@ -22,32 +22,30 @@ public class CategoryController {
     @GetMapping()
     public ResponseEntity<APIResponse<List<Category>>> findAllCategory(@RequestParam(defaultValue = "1") Integer offset ,
                                                                        @RequestParam(defaultValue = "5") Integer limit){
-        return  ResponseEntity.status(HttpStatus.OK).body(
-                new APIResponse<>(
-                        "All Categories have been successfully founded",
-                        categoryService.findAllCategory(offset,limit),
-                        HttpStatus.OK,
-                        new Date()
-                )
-        );
+
+        APIResponse<List<Category>> response=APIResponse.<List<Category>> builder()
+                .message("All Categories have been successfully founded")
+                .payload(categoryService.findAllCategory(offset,limit))
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @GetMapping("/{id}")
     public ResponseEntity<APIResponse<Category>> findCategoryById(@PathVariable Integer id){
         Category findcategory=categoryService.findCategoryById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new APIResponse<>(
-                        "The category have been successfully founded",
-                        findcategory,
-                        HttpStatus.OK,
-                        new Date()
-                )
-        );
+        APIResponse<Category> response= APIResponse.<Category> builder()
+                .message("The category have been successfully founded")
+                .payload(findcategory)
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
    @PostMapping()
    public Category insertCategory(@RequestBody CategoryRequest categoryRequest){
        return categoryService.insertCategory(categoryRequest);
-
    }
 
 }
