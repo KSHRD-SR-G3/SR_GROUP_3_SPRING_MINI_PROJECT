@@ -21,19 +21,72 @@ public class ExpenseController {
             this.expenseService = expenseService;
         }
 
-        @GetMapping
-        public ResponseEntity<APIResponse<List<Expense>>> findAllExpense(
-                @RequestParam(defaultValue = "1") Integer offset,
-                @RequestParam(defaultValue = "3") Integer limit)
-        {
-            APIResponse<List<Expense>> response = APIResponse.<List<Expense>>builder()
-                    .message("All expenses have been successfully fetched.")
-                    .payload(expenseService.findAllExpense(offset, limit))
-                    .status(HttpStatus.OK)
-                    .creationDate(new Date())
-                    .build();
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         @GetMapping("/{id}")
         public ResponseEntity<APIResponse<Expense>> findExpenseById(@PathVariable Integer id){

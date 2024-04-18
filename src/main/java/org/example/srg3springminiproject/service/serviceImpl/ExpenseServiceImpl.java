@@ -18,11 +18,76 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 
 
-    @Override
-    public List<Expense> findAllExpense(Integer offset, Integer limit) {
-        offset=(offset-1) *limit;
-        return expenseRepository.findAllExpense(offset,limit);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public Expense findExpenseById(Integer id) {

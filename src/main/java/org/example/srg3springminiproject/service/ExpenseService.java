@@ -12,7 +12,62 @@ public interface ExpenseService {
 
 
 
-    List<Expense> findAllExpense(Integer offset, Integer limit);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Expense findExpenseById(Integer id);
 
