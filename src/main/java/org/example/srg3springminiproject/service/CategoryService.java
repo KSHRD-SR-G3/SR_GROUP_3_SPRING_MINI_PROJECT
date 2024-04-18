@@ -16,4 +16,13 @@ public interface CategoryService {
 
 //    Category saveCategory(CategoryRequest categoryRequest);
 
+
+
+
+    Category updateCategory(Integer id, CategoryRequest categoryRequest);
+
+    String removeCategory(Integer id);
+
+
+
 }
