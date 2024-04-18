@@ -19,22 +19,24 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Expense findExpenseById(Integer id) {
-        return expenseRepository.findExpenseById(id);
+        Long userId = userService.getUsernameOfCurrentUser();
+        return expenseRepository.findExpenseById(id,userId);
     }
 
 
     @Override
 
     public List<Expense> getAllExpense(int offset, int limit, String sortBy,String orderByStr) {
+        Long userId = userService.getUsernameOfCurrentUser();
         offset = (offset - 1) * limit;
-        return expenseRepository.getAllExpense(offset,limit,sortBy,orderByStr);
+        return expenseRepository.getAllExpense(offset,limit,sortBy,orderByStr, userId);
     }
 
 
     @Override
     public Expense saveExpense(ExpenseRequest expenseRequest) {
-        Long UserId = userService.getUsernameOfCurrentUser();
-        Expense expenseId = expenseRepository.saveExpense(expenseRequest,UserId);
+        Long userId = userService.getUsernameOfCurrentUser();
+        Expense expenseId = expenseRepository.saveExpense(expenseRequest,userId);
         return expenseId;
 
     }
@@ -42,8 +44,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Expense updateExpense(Integer id, ExpenseRequest expenseRequest) {
-        Long UserId = userService.getUsernameOfCurrentUser();
-        Expense expenseId = expenseRepository.updateExpense(id,expenseRequest,UserId);
+        Long userId = userService.getUsernameOfCurrentUser();
+        Expense expenseId = expenseRepository.updateExpense(id,expenseRequest,userId);
         return expenseId;
     }
 

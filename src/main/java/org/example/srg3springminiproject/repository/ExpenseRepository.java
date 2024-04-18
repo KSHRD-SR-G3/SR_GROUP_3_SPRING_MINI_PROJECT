@@ -11,7 +11,7 @@ public interface ExpenseRepository {
 
     @Select("""
 
-        select * from expenses_tb order by ${sortBy} ${orderByStr} LIMIT #{limit} OFFSET #{offset};
+        select * from expenses_tb WHERE user_id =#{UserId} order by ${sortBy} ${orderByStr} LIMIT #{limit} OFFSET #{offset};
         
     """)
     @Results(id="expenseMapping", value = {
@@ -20,15 +20,15 @@ public interface ExpenseRepository {
             @Result(property = "expenseId", column = "expense_id"),
 
     })
-    List<Expense> getAllExpense(int offset, int limit, String sortBy,String orderByStr);
+    List<Expense> getAllExpense(int offset, int limit, String sortBy,String orderByStr,Long UserId);
 
 
 
     @Select("""
-            SELECT *FROM expenses_tb WHERE expense_id= #{id}
+            SELECT *FROM expenses_tb WHERE expense_id= #{id} AND user_id =#{userId}
     """)
     @ResultMap("expenseMapping")
-    Expense findExpenseById(Integer id);
+    Expense findExpenseById(Integer id,Long userId);
 
 
 

@@ -10,13 +10,13 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface CategoryRepository {
     @Select("""
-       SELECT * FROM categories_tb  LIMIT #{limit} OFFSET #{offset} ;
+       SELECT * FROM categories_tb WHERE user_id =#{UserId} LIMIT #{limit} OFFSET #{offset};
     """)
     @Results(id = "categoryMapper", value = {
             @Result(property = "categoryId", column = "category_id"),
             @Result(property = "users", column = "user_id", one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById"))
     })
-    List<Category> findAllCategory(Integer offset, Integer limit,Long userId);
+    List<Category> findAllCategory(Integer offset, Integer limit,Long UserId);
 
     @Select("""
         SELECT * FROM categories_tb WHERE category_id=#{id} AND user_id =#{userId} ;
