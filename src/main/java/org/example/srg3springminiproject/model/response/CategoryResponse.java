@@ -12,4 +12,5 @@ public class CategoryResponse {
     private Integer categoryId;
     private String name;
     private String description;
+    private UserResponse users;
 }

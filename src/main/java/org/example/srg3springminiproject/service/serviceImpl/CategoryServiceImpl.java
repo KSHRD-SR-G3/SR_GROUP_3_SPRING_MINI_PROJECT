@@ -19,18 +19,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAllCategory(Integer offset, Integer limit) {
+        long userId = userServiceImpl.getUsernameOfCurrentUser();
         offset = (offset - 1) * limit;
-        return categoryRepository.findAllCategory(offset, limit);
+        return categoryRepository.findAllCategory(offset, limit,userId);
     }
 
-//    @Override
-//    public Category findCategoryById(Integer id) {
-//
-//        return categoryRepository.findCategoryById(id);
-//    }
+
     @Override
     public CategoryResponse findCategoryById(Integer id) {
-        Category category = categoryRepository.findCategoryById(id);
+        long UserId = userServiceImpl.getUsernameOfCurrentUser();
+        Category category = categoryRepository.findCategoryById(id,UserId);
 
         if (category == null) {
             throw new NotFoundException("The category with id " + id + " doesn't exist.");
