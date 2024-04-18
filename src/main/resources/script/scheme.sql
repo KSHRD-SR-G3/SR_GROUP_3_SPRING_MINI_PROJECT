@@ -1,4 +1,4 @@
-CREATE DATABASE expense_tracking_db;
+CREATE DATABASE mini_project_spring_db ;
 
 CREATE TABLE users_tb (
     user_id SERIAL PRIMARY KEY,
@@ -11,7 +11,7 @@ CREATE TABLE categories_tb (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR (100),
     description VARCHAR (250),
-    user_id INT UNIQUE,
+    user_id INT,
     FOREIGN KEY (user_id) REFERENCES users_tb (user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -20,8 +20,8 @@ CREATE TABLE expenses_tb (
     amount INT,
     description VARCHAR (250),
     date TIMESTAMP,
-    user_id INT UNIQUE ,
-    category_id INT UNIQUE,
+    user_id INT ,
+    category_id INT ,
     FOREIGN KEY (user_id) REFERENCES users_tb (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories_tb (category_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
