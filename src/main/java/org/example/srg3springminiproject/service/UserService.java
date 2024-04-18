@@ -1,7 +1,7 @@
 package org.example.srg3springminiproject.service;
 
 import jakarta.mail.MessagingException;
-import org.example.srg3springminiproject.model.User;
+
 import org.example.srg3springminiproject.model.request.ForgetRequest;
 import org.example.srg3springminiproject.model.request.LoginRequest;
 import org.example.srg3springminiproject.model.request.RegisterRequest;
@@ -20,6 +20,5 @@ public interface UserService {
     UserResponse forgetPassword(ForgetRequest forgetRequest, String email);
 
     Long getUsernameOfCurrentUser();
-
 
 }
