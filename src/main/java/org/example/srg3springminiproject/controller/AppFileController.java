@@ -1,8 +1,10 @@
 package org.example.srg3springminiproject.controller;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import lombok.AllArgsConstructor;
+
 import org.example.srg3springminiproject.model.AppFile;
+
 import org.example.srg3springminiproject.model.response.APIResponse;
 import org.example.srg3springminiproject.service.AppFileService;
 import org.springframework.core.io.Resource;
@@ -19,7 +21,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/v1/files")
 @AllArgsConstructor
-@SecurityRequirement(name = "bearerAuth")
+
 public class AppFileController {
     private final AppFileService appFileService;
 

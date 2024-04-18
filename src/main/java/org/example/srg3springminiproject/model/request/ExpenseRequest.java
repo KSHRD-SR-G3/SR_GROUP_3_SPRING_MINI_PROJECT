@@ -1,4 +1,4 @@
-package org.example.srg3springminiproject.model.dto.request;
+package org.example.srg3springminiproject.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
