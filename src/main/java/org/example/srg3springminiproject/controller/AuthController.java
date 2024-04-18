@@ -50,44 +50,12 @@ public class AuthController {
     }
     @PutMapping("/verify-otp")
     public ResponseEntity<?> verifyOtp(@RequestParam @Positive (message = "OTP code must be a positive number") String otpCode) {
-//        if (userService.verifyOtp(otpCode)) {
-//
-//            APIResponse<String> response = APIResponse.<String>builder()
-//                    .message("OTP verified successfully")
-//                    .status(HttpStatus.OK)
-//                    .creationDate(new Date())
-//                    .payload("Your OTP has been successfully verified.")
-//                    .build();
-//            return ResponseEntity.ok(response);
-//        } else  {
-//            APIResponse<String> response = APIResponse.<String>builder()
-//                    .message("Invalid or expired OTP code: "+ new Date())
-//                    .status(HttpStatus.BAD_REQUEST)
-//                    .creationDate(new Date())
-//                    .payload("The OTP code you provided is either invalid or expired. Please try again.")
-//                    .build();
-//            return ResponseEntity.badRequest().body(response);
-//        }
         boolean response = userService.verifyOtp(otpCode);
-        //System.out.println(response);
         return ResponseEntity.status(HttpStatus.OK).body(new APIResponse<>(
                 "Your account is Verify successfully", response, HttpStatus.OK, new Date()
         ));
     }
     @PostMapping("/resend-otp")
-//    public ResponseEntity<APIResponse<String>> resendOtp(@RequestParam @Valid String email) {
-//        String message = userService.resendOtp(email);
-//        HttpStatus status = HttpStatus.OK;
-//        if (!message.equals("OTP resent successfully.")) {
-//            status = HttpStatus.BAD_REQUEST;
-//        }
-//        APIResponse<String> response = APIResponse.<String>builder()
-//                .message(message)
-//                .status(HttpStatus.OK)
-//                .creationDate(new Date())
-//                .build();
-//        return ResponseEntity.status(status).body(response);
-//    }
     public ResponseEntity<String> resendOtp(@RequestParam @Valid String email) {
         String message = userService.resendOtp(email);
         return ResponseEntity.status(HttpStatus.OK).body(message);
