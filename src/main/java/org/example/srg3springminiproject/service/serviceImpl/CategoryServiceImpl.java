@@ -14,11 +14,13 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     private final UserServiceImpl userServiceImpl;
     private final CategoryRepository categoryRepository;
+
     private final ModelMapper modelMapper;
+
     @Override
     public List<Category> findAllCategory(Integer offset, Integer limit) {
-        offset=(offset-1)*limit;
-        return categoryRepository.findAllCategory(offset,limit);
+        offset = (offset - 1) * limit;
+        return categoryRepository.findAllCategory(offset, limit);
     }
 
 //    @Override
@@ -40,10 +42,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category insertCategory(CategoryRequest categoryRequest) {
+
        long UserId = userServiceImpl.getUsernameOfCurrentUser();
         System.out.println(UserId);
-        Category categoryId=categoryRepository.insertCategory(categoryRequest,UserId);
+        Category categoryId = categoryRepository.insertCategory(categoryRequest,UserId);
         return categoryId;
+
+
     }
+
 
 }
