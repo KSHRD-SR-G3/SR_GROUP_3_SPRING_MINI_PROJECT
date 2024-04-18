@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component
 @AllArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
-    private final JWTService jwtService;
+    private final JwtService jwtService;
     private final AuthService authService;
 
     @Override

@@ -14,7 +14,7 @@ public interface CategoryRepository {
     """)
     @Results(id = "categoryMapper", value = {
             @Result(property = "categoryId", column = "category_id"),
-            @Result(property = "users", column = "user_id", one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById"))
+            @Result(property = "user", column = "user_id", one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById"))
     })
     List<Category> findAllCategory(Integer offset, Integer limit,Long UserId);
 
@@ -33,7 +33,6 @@ public interface CategoryRepository {
     """)
     @ResultMap("categoryMapper")
     Category insertCategory(@Param("category") CategoryRequest categoryRequest, long userId);
-
 
     @Select("""
         UPDATE categories_tb set name = (#{category.name}),description = (#{category.description}) WHERE category_id = #{id} RETURNING *
