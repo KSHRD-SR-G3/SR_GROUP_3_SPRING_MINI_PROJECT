@@ -104,15 +104,12 @@ public class UserServiceImpl implements UserService {
                     }
                     return true;
                 }
-//            } else {
-//                System.out.println("The OTP has expired: " + expirationTime);
-//                return false;
-//            }
+
                 throw new NotFoundException("OTP code is Invalid or Expiration, please try again.");
             }
         }
-        //return false;
-            throw new NotFoundException("Your account is already verified");
+
+        throw new NotFoundException("Your account is already verified");
     }
 
     @Override
