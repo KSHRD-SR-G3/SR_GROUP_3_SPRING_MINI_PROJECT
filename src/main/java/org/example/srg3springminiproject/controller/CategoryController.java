@@ -1,6 +1,11 @@
 package org.example.srg3springminiproject.controller;
+
+import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+
 import org.example.srg3springminiproject.model.Category;
 import org.example.srg3springminiproject.model.response.APIResponse;
+import org.example.srg3springminiproject.model.response.CategoryResponse;
 import org.example.srg3springminiproject.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +18,8 @@ import lombok.AllArgsConstructor;
 
 import org.example.srg3springminiproject.model.request.CategoryRequest;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -38,17 +45,27 @@ public class CategoryController {
                 )
         );
     }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<APIResponse<Category>> findCategoryById(@PathVariable Integer id){
+//        Category findcategory=categoryService.findCategoryById(id);
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new APIResponse<>(
+//                        "The category have been successfully founded",
+//                        findcategory,
+//                        HttpStatus.OK,
+//                        new Date()
+//                )
+//        );
+//    }
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse<Category>> findCategoryById(@PathVariable Integer id){
-        Category findcategory=categoryService.findCategoryById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new APIResponse<>(
-                        "The category have been successfully founded",
-                        findcategory,
-                        HttpStatus.OK,
-                        new Date()
-                )
-        );
+    public ResponseEntity<APIResponse<CategoryResponse>> findCategoryById(@PathVariable @Positive Integer id) {
+        APIResponse<CategoryResponse> response = APIResponse.<CategoryResponse>builder()
+                .message("get cate by id successfully")
+                .payload(categoryService.findCategoryById(id))
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
    @PostMapping()
