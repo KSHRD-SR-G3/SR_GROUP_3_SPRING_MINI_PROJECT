@@ -16,7 +16,7 @@ public interface ExpenseRepository {
     """)
     @Results(id="expenseMapping", value = {
             @Result(property = "user",column = "user_id",one = @One(select = "org.example.srg3springminiproject.repository.UserRepository.getUserById")),
-            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryByCategoryId")),
+            @Result(property = "categories",column = "category_id",one = @One(select = "org.example.srg3springminiproject.repository.CategoryRepository.findCategoryByCate")),
             @Result(property = "expenseId", column = "expense_id"),
 
     })

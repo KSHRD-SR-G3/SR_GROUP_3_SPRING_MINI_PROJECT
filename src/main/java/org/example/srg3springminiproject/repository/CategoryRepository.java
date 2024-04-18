@@ -24,11 +24,16 @@ public interface CategoryRepository {
     @ResultMap("categoryMapper")
     Category findCategoryById(Integer id);
 
+    @Select("SELECT category_id, name,description FROM categories_tb WHERE category_id = #{id}")
+    @ResultMap("categoryMapper")
+    Category findCategoryByCate(Integer id);
+
     @Select("""
         INSERT INTO categories_tb (name,description,user_id) values (#{category.name},#{category.description},#{userId}) RETURNING *;
     """)
     @ResultMap("categoryMapper")
     Category insertCategory(@Param("category") CategoryRequest categoryRequest, long userId);
+
 
     @Select("""
         UPDATE categories_tb set name = (#{category.name}),description = (#{category.description}) WHERE category_id = #{id} RETURNING *
