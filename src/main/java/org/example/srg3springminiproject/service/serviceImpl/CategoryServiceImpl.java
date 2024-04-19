@@ -58,12 +58,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Boolean removeCategory(UUID id) {
-        if (!categoryRepository.removeCategory(id)) {
+        boolean removed = categoryRepository.removeCategory(id);
+        if (!removed) {
             throw new NotFoundException("The category with id " + id + " doesn't exist.");
         }
-        else {
-            return categoryRepository.removeCategory(id);
-        }
+        return removed;
     }
-
 }

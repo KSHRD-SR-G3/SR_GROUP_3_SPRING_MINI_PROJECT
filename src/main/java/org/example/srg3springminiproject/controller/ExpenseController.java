@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.example.srg3springminiproject.model.Expense;
 import org.example.srg3springminiproject.model.request.ExpenseRequest;
@@ -30,8 +31,8 @@ public class ExpenseController {
     }
 
     @GetMapping
-    public ResponseEntity<APIResponse<List<Expense>>> getAllExpense(@RequestParam(defaultValue = "1") int offset,
-                                                                    @RequestParam(defaultValue = "5") int limit,
+    public ResponseEntity<APIResponse<List<Expense>>> getAllExpense(@RequestParam(defaultValue = "1") @Positive Integer offset,
+                                                                    @RequestParam(defaultValue = "5") @Positive Integer limit,
                                                                     @RequestParam String sortBy,
                                                                     @Parameter(description = "orderBy", schema = @Schema(allowableValues={"False", "True"}))
                                                                     @RequestParam(required = false, defaultValue = "False") String orderBy) {
@@ -42,7 +43,6 @@ public class ExpenseController {
                 .status(HttpStatus.OK)
                 .creationDate(new Date())
                 .build();
-
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -57,107 +57,38 @@ public class ExpenseController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        @GetMapping("/{id}")
-        public ResponseEntity<APIResponse<Expense>> findExpenseById(@PathVariable UUID id){
-            APIResponse<Expense> response= APIResponse.<Expense>builder()
-                    .message("Get expense by id have been successfully ")
-                    .payload(expenseService.findExpenseById(id))
-                    .status(HttpStatus.OK)
-                    .creationDate(new Date())
-                    .build();
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
-
-
-        @PostMapping
-        public ResponseEntity<APIResponse<Expense>>  saveExpense(@RequestBody ExpenseRequest expenseRequest){
-            APIResponse<Expense> response = APIResponse.<Expense>builder()
-                    .message("Add new expense have been successfully")
-                    .payload(expenseService.saveExpense(expenseRequest))
-                    .status(HttpStatus.CREATED)
-                    .creationDate(new Date())
-                    .build();
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
-
-        @PutMapping("/{id}")
-        public ResponseEntity<APIResponse<Expense>> updateExpense( @RequestBody ExpenseRequest expenseRequest,@PathVariable UUID id){
-           APIResponse<Expense> response = APIResponse.<Expense>builder()
-                   .message("Update on expense have been successfully ")
-                   .payload(expenseService.updateExpense(id,expenseRequest))
-                   .status(HttpStatus.OK)
-                   .creationDate(new Date())
-                   .build();
-           return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<APIResponse<Expense>> findExpenseById(@PathVariable UUID id){
+        APIResponse<Expense> response= APIResponse.<Expense>builder()
+                .message("Get expense by id have been successfully ")
+                .payload(expenseService.findExpenseById(id))
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
+    @PostMapping
+    public ResponseEntity<APIResponse<Expense>> saveExpense(@RequestBody @Valid ExpenseRequest expenseRequest){
+        APIResponse<Expense> response = APIResponse.<Expense>builder()
+                .message("Add new expense have been successfully")
+                .payload(expenseService.saveExpense(expenseRequest))
+                .status(HttpStatus.CREATED)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<APIResponse<Expense>> updateExpense(@RequestBody @Valid ExpenseRequest expenseRequest,@PathVariable UUID id){
+        APIResponse<Expense> response = APIResponse.<Expense>builder()
+                .message("Update on expense have been successfully ")
+                .payload(expenseService.updateExpense(id,expenseRequest))
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
 }

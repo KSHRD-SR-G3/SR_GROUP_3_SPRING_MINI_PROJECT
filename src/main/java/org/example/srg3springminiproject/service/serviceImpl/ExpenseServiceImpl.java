@@ -34,7 +34,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-
     public List<Expense> getAllExpense(int offset, int limit, String sortBy,String orderByStr) {
         UUID userId = userService.getUsernameOfCurrentUser();
         offset = (offset - 1) * limit;
@@ -52,7 +51,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     public Expense updateExpense(UUID id, ExpenseRequest expenseRequest) {
         UUID userId = userService.getUsernameOfCurrentUser();
         Expense expenseId = expenseRepository.updateExpense(id,expenseRequest,userId);
-        //return expenseId;
 
         if (expenseId == null) {
             throw new NotFoundException("The expense with id " + id + " doesn't exist.");
@@ -64,11 +62,10 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Boolean deleteExpense(UUID id) {
-        if (!expenseRepository.deleteExpense(id)) {
+        boolean removed = expenseRepository.deleteExpense(id);
+        if (!removed) {
             throw new NotFoundException("The expense with id " + id + " doesn't exist.");
         }
-        else {
-            return expenseRepository.deleteExpense(id);
-        }
+        return removed;
     }
 }

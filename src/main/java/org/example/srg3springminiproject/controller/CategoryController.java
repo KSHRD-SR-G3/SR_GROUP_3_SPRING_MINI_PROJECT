@@ -30,8 +30,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class CategoryController {
     private final CategoryService categoryService;
     @GetMapping()
-    public ResponseEntity<APIResponse<List<Category>>> findAllCategory(@RequestParam(defaultValue = "1") Integer offset ,
-                                                                       @RequestParam(defaultValue = "5") Integer limit){
+    public ResponseEntity<APIResponse<List<Category>>> findAllCategory(@RequestParam(defaultValue = "1") @Positive Integer offset ,
+                                                                       @RequestParam(defaultValue = "5") @Positive Integer limit){
         APIResponse<List<Category>> response=APIResponse.<List<Category>> builder()
                 .message("All Categories have been successfully founded")
                 .payload(categoryService.findAllCategory(offset,limit))
