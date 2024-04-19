@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import org.example.srg3springminiproject.config.PasswordConfig;
 import org.example.srg3springminiproject.exception.InvalidInputException;
 import org.example.srg3springminiproject.exception.NotFoundException;
-import org.example.srg3springminiproject.jwt.JWTService;
+import org.example.srg3springminiproject.jwt.JwtService;
 import org.example.srg3springminiproject.model.Otp;
 import org.example.srg3springminiproject.model.User;
 import org.example.srg3springminiproject.model.request.ForgetRequest;
@@ -21,8 +21,6 @@ import org.example.srg3springminiproject.util.EmailUtil;
 import org.example.srg3springminiproject.util.OtpUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +40,7 @@ public class UserServiceImpl implements UserService {
     private final AuthService authService;
     private final PasswordConfig passwordConfig;
     private final AuthenticationManager authenticationManager;
-    private final JWTService jwtService;
+    private final JwtService jwtService;
     @Override
     public UserResponse register(RegisterRequest registerRequest) throws MessagingException {
         User checkEmail = userRepository.getUserByEmail(registerRequest.getEmail());
@@ -104,15 +102,12 @@ public class UserServiceImpl implements UserService {
                     }
                     return true;
                 }
-//            } else {
-//                System.out.println("The OTP has expired: " + expirationTime);
-//                return false;
-//            }
+
                 throw new NotFoundException("OTP code is Invalid or Expiration, please try again.");
             }
         }
-        //return false;
-            throw new NotFoundException("Your account is already verified");
+
+        throw new NotFoundException("Your account is already verified");
     }
 
     @Override

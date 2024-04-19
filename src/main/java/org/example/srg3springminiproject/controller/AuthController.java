@@ -27,25 +27,27 @@ import java.util.Date;
 
 public class AuthController {
     private final UserService userService;
-    @PostMapping("/register")
-    public ResponseEntity<APIResponse<UserResponse>> register(@RequestBody @Valid  RegisterRequest registerRequest) throws MessagingException {
-        if (!isValidPassword(registerRequest.getPassword())) throw new InvalidInputException("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character.");
 
+    @PostMapping("/register")
+    public ResponseEntity<APIResponse<UserResponse>> register(@RequestBody @Valid RegisterRequest registerRequest) throws MessagingException {
+        if (!isValidPassword(registerRequest.getPassword()))
+            throw new InvalidInputException("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character.");
         UserResponse userResponse = userService.register(registerRequest);
         System.out.println(userResponse);
         System.out.println(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse<>(
-                "Please Check Email for Verify OTP Code", userResponse, HttpStatus.CREATED,new Date()
+                "Please Check Email for Verify OTP Code", userResponse, HttpStatus.CREATED, new Date()
         ));
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
         AuthResponse response = userService.login(loginRequest);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse<>(
-                "Login Successful", response, HttpStatus.CREATED,new Date()
+                "Login Successful", response, HttpStatus.CREATED, new Date()
         ));
     }
+
     @PutMapping("/verify-otp")
     public ResponseEntity<?> verifyOtp(@RequestParam @Positive (message = "OTP code must be a positive number") String otpCode) {
         boolean response = userService.verifyOtp(otpCode);
@@ -53,6 +55,7 @@ public class AuthController {
                 "Your account is Verify successfully", response, HttpStatus.OK, new Date()
         ));
     }
+
     @PostMapping("/resend-otp")
     public ResponseEntity<String> resendOtp(@RequestParam @Valid String email) {
         String message = userService.resendOtp(email);
@@ -68,7 +71,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
-    public static boolean isValidPassword(String password) {
+    public static boolean isValidPassword(String password){
         return password.matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$");
     }
 }

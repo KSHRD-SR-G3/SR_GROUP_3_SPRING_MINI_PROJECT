@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,7 +24,6 @@ public class User implements UserDetails {
 
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
-
 
     @Override
     public String getUsername() {

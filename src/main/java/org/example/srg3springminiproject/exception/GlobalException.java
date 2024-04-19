@@ -36,4 +36,21 @@ public class GlobalException {
         problemDetail.setTitle("Bad Request");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ProblemDetail handleMethodValidationException(HandlerMethodValidationException e) {
+        Map<String, String> errors = new HashMap<>();
+
+        for (var parameterError : e.getAllValidationResults()) {
+            String parameterName = parameterError.getMethodParameter().getParameterName();
+
+            for (var error : parameterError.getResolvableErrors()) {
+                errors.put(parameterName, error.getDefaultMessage());
+            }
+        }
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Bad Request");
+        problemDetail.setProperty("errors", errors);
+        return problemDetail;
+    }
 }

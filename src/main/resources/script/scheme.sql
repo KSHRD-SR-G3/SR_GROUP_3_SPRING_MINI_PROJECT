@@ -1,4 +1,4 @@
-CREATE DATABASE expense_tracking_db;
+CREATE DATABASE mini_project_spring_db ;
 
 CREATE TABLE users_tb (
     user_id SERIAL PRIMARY KEY,
@@ -21,17 +21,20 @@ CREATE TABLE expenses_tb (
     description VARCHAR (250),
     date TIMESTAMP,
     user_id INT ,
-    category_id INT UNIQUE,
+    category_id INT,
     FOREIGN KEY (user_id) REFERENCES users_tb (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories_tb (category_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE otp_tb(
-            opt_id SERIAL PRIMARY KEY,
-            otp_code VARCHAR(6) NOT NULL,
-            issued_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            expiration_time TIMESTAMP NOT NULL,
-            verified BOOLEAN NOT NULL DEFAULT FALSE,
-            user_id INT UNIQUE,
-            FOREIGN KEY (user_id) REFERENCES users_tb (user_id) ON UPDATE CASCADE ON DELETE CASCADE
+    opt_id SERIAL PRIMARY KEY,
+    otp_code VARCHAR(6) NOT NULL,
+    issued_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expiration_time TIMESTAMP NOT NULL,
+    verified BOOLEAN NOT NULL DEFAULT FALSE,
+    user_id INT UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES users_tb (user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+
+
