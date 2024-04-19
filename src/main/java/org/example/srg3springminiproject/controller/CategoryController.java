@@ -18,6 +18,8 @@ import org.example.srg3springminiproject.model.request.CategoryRequest;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
@@ -39,7 +41,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse<CategoryResponse>> findCategoryById(@PathVariable @Positive Integer id){
+    public ResponseEntity<APIResponse<CategoryResponse>> findCategoryById(@PathVariable UUID id){
         APIResponse<CategoryResponse> response= APIResponse.<CategoryResponse> builder()
                 .message("The category have been successfully founded")
                 .payload(categoryService.findCategoryById(id))
@@ -55,8 +57,7 @@ public class CategoryController {
     }
     //update category
     @PutMapping("/{id}")
-    public ResponseEntity<APIResponse<CategoryResponse>> updateCategory(@PathVariable @Positive Integer id, @RequestBody CategoryRequest categoryRequest){
-        //return categoryService.updateCategory(id,categoryRequest);
+    public ResponseEntity<APIResponse<CategoryResponse>> updateCategory(@PathVariable UUID id, @RequestBody CategoryRequest categoryRequest){
         CategoryResponse updateCategory=categoryService.updateCategory(id, categoryRequest);
         APIResponse<CategoryResponse> response = APIResponse.<CategoryResponse>builder()
                 .message("Update  Category Success!")
@@ -68,7 +69,7 @@ public class CategoryController {
     }
     //Delete Category
     @DeleteMapping("/{id}")
-    public ResponseEntity<RemoveResponse<Category>> removeCategory(@PathVariable @Positive Integer id){
+    public ResponseEntity<RemoveResponse<Category>> removeCategory(@PathVariable UUID id){
         categoryService.removeCategory(id);
         RemoveResponse<Category> response = RemoveResponse.<Category>builder()
                 .message("The category has been successfully deleted.")

@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.srg3springminiproject.model.response.UserResponse;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
-    private Integer categoryId;
+    private UUID categoryId;
     private String name;
     private String description;
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 import org.example.srg3springminiproject.model.response.UserResponse;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Expense {
-    private Integer expenseId;
+    private UUID expenseId;
     private int amount;
     private String description;
     private LocalDateTime date;
