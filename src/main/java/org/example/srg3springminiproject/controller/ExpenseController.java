@@ -46,7 +46,6 @@ public class ExpenseController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<RemoveResponse<Expense>> deleteExpense(@PathVariable UUID id){
         expenseService.deleteExpense(id);

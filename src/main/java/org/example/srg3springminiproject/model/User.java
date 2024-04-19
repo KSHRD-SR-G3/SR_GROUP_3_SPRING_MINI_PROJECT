@@ -19,11 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class User implements UserDetails {
     private UUID userId;
-    @NotNull
-    @Email
     private String email;
-    @NotNull
-    @Pattern(regexp = "(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$\"\n")
     private String password;
     private String profileImage;
 
