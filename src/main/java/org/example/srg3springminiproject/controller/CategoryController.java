@@ -58,7 +58,6 @@ public class CategoryController {
     //update category
     @PutMapping("/{id}")
     public ResponseEntity<APIResponse<CategoryResponse>> updateCategory(@PathVariable UUID id, @RequestBody CategoryRequest categoryRequest){
-        //return categoryService.updateCategory(id,categoryRequest);
         CategoryResponse updateCategory=categoryService.updateCategory(id, categoryRequest);
         APIResponse<CategoryResponse> response = APIResponse.<CategoryResponse>builder()
                 .message("Update  Category Success!")

@@ -33,8 +33,6 @@ public class AuthController {
         if (!isValidPassword(registerRequest.getPassword()))
             throw new InvalidInputException("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character.");
         UserResponse userResponse = userService.register(registerRequest);
-        System.out.println(userResponse);
-        System.out.println(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(new APIResponse<>(
                 "Please Check Email for Verify OTP Code", userResponse, HttpStatus.CREATED, new Date()
         ));
