@@ -8,6 +8,8 @@ import org.example.srg3springminiproject.model.request.RegisterRequest;
 import org.example.srg3springminiproject.model.response.AuthResponse;
 import org.example.srg3springminiproject.model.response.UserResponse;
 
+import java.util.UUID;
+
 public interface UserService {
     UserResponse register(RegisterRequest registerRequest)throws MessagingException;
 
@@ -19,6 +21,6 @@ public interface UserService {
 
     UserResponse forgetPassword(ForgetRequest forgetRequest, String email);
 
-    Long getUsernameOfCurrentUser();
+    UUID getUsernameOfCurrentUser();
 
 }

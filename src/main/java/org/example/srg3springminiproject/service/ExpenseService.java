@@ -7,18 +7,19 @@ import org.example.srg3springminiproject.model.request.ExpenseRequest;
 
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ExpenseService {
 
     List<Expense> getAllExpense(int offset, int limit,  String sortBy,String orderByStr);
 
 
-    Expense findExpenseById(Integer id);
+    Expense findExpenseById(UUID id);
 
     Expense saveExpense(ExpenseRequest expenseRequest);
 
-    Expense updateExpense(Integer id, ExpenseRequest expenseRequest);
+    Expense updateExpense(UUID id, ExpenseRequest expenseRequest);
 
 
-    Boolean deleteExpense(Integer id);
+    Boolean deleteExpense(UUID id);
 }

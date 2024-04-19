@@ -5,6 +5,8 @@ import org.example.srg3springminiproject.model.User;
 import org.example.srg3springminiproject.model.request.ForgetRequest;
 import org.example.srg3springminiproject.model.response.UserResponse;
 
+import java.util.UUID;
+
 @Mapper
 public interface UserRepository {
     @Results(id = "authMapper", value = {
@@ -24,9 +26,9 @@ public interface UserRepository {
     @ResultMap("authMapper")
     User updatePassword(@Param("pass") ForgetRequest forgetRequest , @Param("email") String email);
 
-    @Select("SELECT * FROM users_tb WHERE user_id = #{id}")
+    @Select("SELECT * FROM users_tb WHERE user_id = CAST(#{id} AS UUID)")
     @Result(property = "userId",column = "user_id")
     @Result(property = "email", column = "email")
     @Result(property = "profileImage", column = "profile_image")
-    UserResponse getUserById(@Param("userId") Integer id);
+    UserResponse getUserById(@Param("userId") UUID id);
 }

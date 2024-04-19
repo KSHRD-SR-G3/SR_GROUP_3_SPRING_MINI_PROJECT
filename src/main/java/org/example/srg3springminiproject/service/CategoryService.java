@@ -5,23 +5,19 @@ import org.example.srg3springminiproject.model.request.CategoryRequest;
 import org.example.srg3springminiproject.model.response.CategoryResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface CategoryService {
 
     List<Category> findAllCategory(Integer offset, Integer limit);
 
-    CategoryResponse findCategoryById(Integer id);
+    CategoryResponse findCategoryById(UUID id);
 
     Category insertCategory(CategoryRequest categoryRequest);
 
-//    Category saveCategory(CategoryRequest categoryRequest);
+    CategoryResponse updateCategory(UUID id, CategoryRequest categoryRequest);
 
-
-
-
-    CategoryResponse updateCategory(Integer id, CategoryRequest categoryRequest);
-
-    Boolean removeCategory(Integer id);
+    Boolean removeCategory(UUID id);
 
 
 
