@@ -13,13 +13,11 @@ public interface ExpenseService {
 
     List<Expense> getAllExpense(int offset, int limit,  String sortBy,String orderByStr);
 
-
     Expense findExpenseById(UUID id);
 
     Expense saveExpense(ExpenseRequest expenseRequest);
 
     Expense updateExpense(UUID id, ExpenseRequest expenseRequest);
-
 
     Boolean deleteExpense(UUID id);
 }

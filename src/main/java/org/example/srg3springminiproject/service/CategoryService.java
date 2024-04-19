@@ -18,7 +18,4 @@ public interface CategoryService {
     CategoryResponse updateCategory(UUID id, CategoryRequest categoryRequest);
 
     Boolean removeCategory(UUID id);
-
-
-
 }

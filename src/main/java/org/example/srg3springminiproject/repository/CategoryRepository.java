@@ -43,7 +43,7 @@ public interface CategoryRepository {
     Category updateCategory(UUID id,@Param("category") CategoryRequest categoryRequest);
 
     @Delete("""
-        DELETE  FROM categories_tb WHERE category_id = CAST(#{id} AS UUID) RETURNING *;
+        DELETE  FROM categories_tb WHERE category_id = CAST(#{id} AS UUID);
     """)
     @ResultMap("categoryMapper")
     Boolean removeCategory(UUID id);
