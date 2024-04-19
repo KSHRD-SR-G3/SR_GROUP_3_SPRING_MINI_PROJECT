@@ -19,9 +19,9 @@ public interface CategoryService {
 
 
 
-    Category updateCategory(Integer id, CategoryRequest categoryRequest);
+    CategoryResponse updateCategory(Integer id, CategoryRequest categoryRequest);
 
-    String removeCategory(Integer id);
+    Boolean removeCategory(Integer id);
 
 
 

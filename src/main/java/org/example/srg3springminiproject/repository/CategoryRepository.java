@@ -44,6 +44,6 @@ public interface CategoryRepository {
         DELETE  FROM categories_tb WHERE category_id = #{id} RETURNING *;
     """)
     @ResultMap("categoryMapper")
-    Category removeCategory(Integer id);
+    Boolean removeCategory(Integer id);
 
 }

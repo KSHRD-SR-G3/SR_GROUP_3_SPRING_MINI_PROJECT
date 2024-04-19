@@ -1,6 +1,7 @@
 package org.example.srg3springminiproject.service.serviceImpl;
 
 import lombok.AllArgsConstructor;
+import org.example.srg3springminiproject.exception.NotFoundException;
 import org.example.srg3springminiproject.model.Expense;
 
 import org.example.srg3springminiproject.model.request.ExpenseRequest;
@@ -20,7 +21,16 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public Expense findExpenseById(Integer id) {
         Long userId = userService.getUsernameOfCurrentUser();
-        return expenseRepository.findExpenseById(id,userId);
+
+        Expense expense = expenseRepository.findExpenseById(id,userId);
+        //return expenseRepository.findExpenseById(id,userId);
+
+        if (expense == null) {
+            throw new NotFoundException("The expense with id " + id + " doesn't exist.");
+        }
+        else {
+            return expenseRepository.findExpenseById(id,userId);
+        }
     }
 
 
@@ -46,13 +56,26 @@ public class ExpenseServiceImpl implements ExpenseService {
     public Expense updateExpense(Integer id, ExpenseRequest expenseRequest) {
         Long userId = userService.getUsernameOfCurrentUser();
         Expense expenseId = expenseRepository.updateExpense(id,expenseRequest,userId);
-        return expenseId;
+        //return expenseId;
+
+        if (expenseId == null) {
+            throw new NotFoundException("The expense with id " + id + " doesn't exist.");
+        }
+        else {
+            return expenseId;
+        }
     }
 
 
     @Override
     public Boolean deleteExpense(Integer id) {
-        return expenseRepository.deleteExpense(id);
+
+        if (expenseRepository.deleteExpense(id) == null) {
+            throw new NotFoundException("The expense with id " + id + " doesn't exist.");
+        }
+        else {
+            return expenseRepository.deleteExpense(id);
+        }
     }
 
 

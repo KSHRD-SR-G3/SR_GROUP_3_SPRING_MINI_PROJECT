@@ -4,9 +4,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.constraints.Positive;
 import org.example.srg3springminiproject.model.Expense;
 import org.example.srg3springminiproject.model.request.ExpenseRequest;
 import org.example.srg3springminiproject.model.response.APIResponse;
+import org.example.srg3springminiproject.model.response.RemoveResponse;
 import org.example.srg3springminiproject.service.ExpenseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,9 +46,9 @@ public class ExpenseController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<APIResponse<?>> deleteExpense(@PathVariable Integer id){
+    public ResponseEntity<RemoveResponse<Expense>> deleteExpense(@PathVariable @Positive Integer id){
         expenseService.deleteExpense(id);
-        APIResponse<Expense> response = APIResponse.<Expense>builder()
+        RemoveResponse<Expense> response = RemoveResponse.<Expense>builder()
                 .message("The expense has been successfully deleted.")
                 .status(HttpStatus.OK)
                 .creationDate(new Date())
@@ -123,7 +125,7 @@ public class ExpenseController {
 
 
         @GetMapping("/{id}")
-        public ResponseEntity<APIResponse<Expense>> findExpenseById(@PathVariable Integer id){
+        public ResponseEntity<APIResponse<Expense>> findExpenseById(@PathVariable @Positive Integer id){
             APIResponse<Expense> response= APIResponse.<Expense>builder()
                     .message("Get expense by id have been successfully ")
                     .payload(expenseService.findExpenseById(id))
@@ -146,7 +148,7 @@ public class ExpenseController {
         }
 
         @PutMapping("/{id}")
-        public ResponseEntity<APIResponse<Expense>> updateExpense( @RequestBody ExpenseRequest expenseRequest,@PathVariable Integer id){
+        public ResponseEntity<APIResponse<Expense>> updateExpense( @RequestBody ExpenseRequest expenseRequest,@PathVariable @Positive Integer id){
            APIResponse<Expense> response = APIResponse.<Expense>builder()
                    .message("Update on expense have been successfully ")
                    .payload(expenseService.updateExpense(id,expenseRequest))

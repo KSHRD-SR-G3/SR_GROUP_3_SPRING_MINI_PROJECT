@@ -46,17 +46,26 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category updateCategory(Integer id, CategoryRequest categoryRequest) {
-        return categoryRepository.updateCategory(id,categoryRequest);
+    public CategoryResponse updateCategory(Integer id, CategoryRequest categoryRequest) {
+        Category category = categoryRepository.updateCategory(id, categoryRequest);
+
+        if (category == null) {
+            throw new NotFoundException("The category with id " + id + " doesn't exist.");
+        }
+        else {
+            return modelMapper.map(category, CategoryResponse.class);
+        }
     }
 
     @Override
-    public String removeCategory(Integer id) {
-        Category isSuccess = categoryRepository.removeCategory(id);
-        if (isSuccess != null){
-            return "The category has been successfully removed.";
+    public Boolean removeCategory(Integer id) {
+
+        if (categoryRepository.removeCategory(id) == null) {
+            throw new NotFoundException("The category with id " + id + " doesn't exist.");
         }
-        return  "fail";
+        else {
+            return categoryRepository.removeCategory(id);
+        }
     }
 
 }
