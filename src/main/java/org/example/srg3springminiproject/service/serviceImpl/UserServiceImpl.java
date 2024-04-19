@@ -27,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -125,6 +126,7 @@ public class UserServiceImpl implements UserService {
         existingOtp.setOtpCode(newOtpCode);
         existingOtp.setIssuedAt(new Timestamp(System.currentTimeMillis()));
         existingOtp.setExpirationTime(calculateExpirationTime());
+        System.out.println(existingOtp);
         otpRepository.updateOtp(existingOtp);
         return "OTP resent successfully.";
     }
@@ -158,10 +160,10 @@ public class UserServiceImpl implements UserService {
         return new Timestamp(expirationTimeMillis);
     }
     @Override
-    public Long getUsernameOfCurrentUser() {
+    public UUID getUsernameOfCurrentUser() {
             User userDetails = (User) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal();
-            Long userId = userDetails.getUserId();
+            UUID userId = userDetails.getUserId();
             System.out.println(userId);
             return userId;
     }

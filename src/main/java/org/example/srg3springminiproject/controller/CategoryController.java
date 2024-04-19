@@ -1,8 +1,12 @@
 package org.example.srg3springminiproject.controller;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.example.srg3springminiproject.model.Category;
+import org.example.srg3springminiproject.model.Expense;
 import org.example.srg3springminiproject.model.response.APIResponse;
 import org.example.srg3springminiproject.model.response.CategoryResponse;
+import org.example.srg3springminiproject.model.response.RemoveResponse;
 import org.example.srg3springminiproject.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,8 @@ import org.example.srg3springminiproject.model.request.CategoryRequest;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
@@ -35,11 +41,10 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse<CategoryResponse>> findCategoryById(@PathVariable Integer id){
-        CategoryResponse findcategory=categoryService.findCategoryById(id);
+    public ResponseEntity<APIResponse<CategoryResponse>> findCategoryById(@PathVariable UUID id){
         APIResponse<CategoryResponse> response= APIResponse.<CategoryResponse> builder()
                 .message("The category have been successfully founded")
-                .payload(findcategory)
+                .payload(categoryService.findCategoryById(id))
                 .status(HttpStatus.OK)
                 .creationDate(new Date())
                 .build();
@@ -52,11 +57,12 @@ public class CategoryController {
     }
     //update category
     @PutMapping("/{id}")
-    public ResponseEntity<APIResponse<Category>> updateCategory(@PathVariable Integer id, @RequestBody CategoryRequest categoryRequest){
+    public ResponseEntity<APIResponse<CategoryResponse>> updateCategory(@PathVariable UUID id, @RequestBody CategoryRequest categoryRequest){
         //return categoryService.updateCategory(id,categoryRequest);
-        APIResponse<Category> response = APIResponse.<Category>builder()
+        CategoryResponse updateCategory=categoryService.updateCategory(id, categoryRequest);
+        APIResponse<CategoryResponse> response = APIResponse.<CategoryResponse>builder()
                 .message("Update  Category Success!")
-                .payload(categoryService.updateCategory(id, categoryRequest))
+                .payload(updateCategory)
                 .status(HttpStatus.OK)
                 .creationDate(new Date())
                 .build();
@@ -64,8 +70,14 @@ public class CategoryController {
     }
     //Delete Category
     @DeleteMapping("/{id}")
-    public String removeCategory(@PathVariable Integer id){
-        return categoryService.removeCategory(id);
+    public ResponseEntity<RemoveResponse<Category>> removeCategory(@PathVariable UUID id){
+        categoryService.removeCategory(id);
+        RemoveResponse<Category> response = RemoveResponse.<Category>builder()
+                .message("The category has been successfully deleted.")
+                .status(HttpStatus.OK)
+                .creationDate(new Date())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
 

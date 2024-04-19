@@ -49,27 +49,24 @@ public class AuthController {
     }
 
     @PutMapping("/verify-otp")
-    public ResponseEntity<?> verifyOtp(@RequestParam @Positive(message = "OTP code must be a positive number") String otpCode) {
+    public ResponseEntity<?> verifyOtp(@RequestParam @Positive (message = "OTP code must be a positive number") String otpCode) {
         boolean response = userService.verifyOtp(otpCode);
-        //System.out.println(response);
         return ResponseEntity.status(HttpStatus.OK).body(new APIResponse<>(
                 "Your account is Verify successfully", response, HttpStatus.OK, new Date()
         ));
     }
 
     @PostMapping("/resend-otp")
-    public ResponseEntity<String> resendOtp (@RequestParam @Valid String email){
+    public ResponseEntity<String> resendOtp(@RequestParam @Valid String email) {
         String message = userService.resendOtp(email);
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
     @PutMapping("/forget-password")
-    public ResponseEntity<UserResponse> forgetPassword (@RequestBody @Valid ForgetRequest
-                                                                forgetRequest, @RequestParam @Valid String email){
-        if (!isValidPassword(forgetRequest.getPassword()))
-            throw new InvalidInputException("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character.");
+    public ResponseEntity<UserResponse> forgetPassword(@RequestBody @Valid ForgetRequest forgetRequest, @RequestParam @Valid String email) {
+        if (!isValidPassword(forgetRequest.getPassword())) throw new InvalidInputException("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character.");
 
-        UserResponse user = userService.forgetPassword(forgetRequest, email);
+        UserResponse user  = userService.forgetPassword(forgetRequest, email);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }

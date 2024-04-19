@@ -9,26 +9,26 @@ import org.example.srg3springminiproject.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final UserServiceImpl userServiceImpl;
     private final CategoryRepository categoryRepository;
-
     private final ModelMapper modelMapper;
 
     @Override
     public List<Category> findAllCategory(Integer offset, Integer limit) {
-        long userId = userServiceImpl.getUsernameOfCurrentUser();
+        UUID userId = userServiceImpl.getUsernameOfCurrentUser();
         offset = (offset - 1) * limit;
         return categoryRepository.findAllCategory(offset, limit,userId);
     }
 
     @Override
-    public CategoryResponse findCategoryById(Integer id) {
-        long UserId = userServiceImpl.getUsernameOfCurrentUser();
+    public CategoryResponse findCategoryById(UUID id) {
+        UUID UserId = userServiceImpl.getUsernameOfCurrentUser();
         Category category = categoryRepository.findCategoryById(id,UserId);
-
         if (category == null) {
             throw new NotFoundException("The category with id " + id + " doesn't exist.");
         }
@@ -39,24 +39,31 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category insertCategory(CategoryRequest categoryRequest) {
-       long UserId = userServiceImpl.getUsernameOfCurrentUser();
+        UUID UserId = userServiceImpl.getUsernameOfCurrentUser();
         System.out.println(UserId);
         Category categoryId = categoryRepository.insertCategory(categoryRequest,UserId);
         return categoryId;
     }
 
     @Override
-    public Category updateCategory(Integer id, CategoryRequest categoryRequest) {
-        return categoryRepository.updateCategory(id,categoryRequest);
+    public CategoryResponse updateCategory(UUID id, CategoryRequest categoryRequest) {
+        Category category = categoryRepository.updateCategory(id, categoryRequest);
+        if (category == null) {
+            throw new NotFoundException("The category with id " + id + " doesn't exist.");
+        }
+        else {
+            return modelMapper.map(category, CategoryResponse.class);
+        }
     }
 
     @Override
-    public String removeCategory(Integer id) {
-        Category isSuccess = categoryRepository.removeCategory(id);
-        if (isSuccess != null){
-            return "The category has been successfully removed.";
+    public Boolean removeCategory(UUID id) {
+        if (!categoryRepository.removeCategory(id)) {
+            throw new NotFoundException("The category with id " + id + " doesn't exist.");
         }
-        return  "fail";
+        else {
+            return categoryRepository.removeCategory(id);
+        }
     }
 
 }
