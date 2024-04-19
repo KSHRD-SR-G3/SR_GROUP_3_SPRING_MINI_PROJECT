@@ -2,58 +2,55 @@ package org.example.srg3springminiproject.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
 public class GlobalException {
-    @ExceptionHandler(NotFoundException.class)
-    public ProblemDetail handleNotFoundException(NotFoundException ex){
+    @ExceptionHandler(org.example.srg3springminiproject.exception.NotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleNotFoundException(NotFoundException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND,
                 ex.getMessage()
         );
         problemDetail.setTitle("Not Found");
-        problemDetail.setProperty("DataTime", LocalDateTime.now());
-        return problemDetail;
+        problemDetail.setProperty("dateTime", new Date());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
-        Map<String, String> errors = new HashMap<>();
-        for(var fieldError : ex.getBindingResult().getFieldErrors()){
-            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        ProblemDetail problemDetail = ProblemDetail.forStatus(
-                HttpStatus.BAD_REQUEST
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidInputException(InvalidInputException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
         );
-        problemDetail.setTitle("Bed Request");
-        problemDetail.setProperty("Error", errors);
-        return problemDetail;
+        problemDetail.setTitle("Bad Request");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
-    public ProblemDetail handlerMethodValidationException(HandlerMethodValidationException ex){
+    public ProblemDetail handleMethodValidationException(HandlerMethodValidationException e) {
         Map<String, String> errors = new HashMap<>();
-        for(var errorParam : ex.getAllValidationResults()){
-            String parameterName =  errorParam.getMethodParameter().getParameterName();
-            for(var error : errorParam.getResolvableErrors()){
+
+        for (var parameterError : e.getAllValidationResults()) {
+            String parameterName = parameterError.getMethodParameter().getParameterName();
+
+            for (var error : parameterError.getResolvableErrors()) {
                 errors.put(parameterName, error.getDefaultMessage());
             }
         }
-        ProblemDetail problemDetail = ProblemDetail.forStatus(
-                HttpStatus.BAD_REQUEST
-        );
-        problemDetail.setTitle("Bed Request");
-        problemDetail.setProperty("Error", errors);
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Bad Request");
+        problemDetail.setProperty("errors", errors);
         return problemDetail;
     }
-
 }
-
