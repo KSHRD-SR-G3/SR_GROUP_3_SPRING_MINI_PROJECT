@@ -1,15 +1,17 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'maven'
+    }
     environment {
         IMAGE = "jingnin/spring-img"
         DOCKER_IMAGE = "${IMAGE}:${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = 'docker-hub'
 
         GIT_MANIFEST_REPO = "https://github.com/Manin1903/manifest-spring.git"
-        GIT_BRANCH = "main"
+        GIT_BRANCH = "master"
         MANIFEST_REPO = "manifest-repo"
-        MANIFEST_FILE_PATH = "manifest/deployment.yaml"
+        MANIFEST_FILE_PATH = "manifests/deployment.yaml"
         GIT_CREDENTIALS_ID = 'github-token'
     }
 
@@ -26,6 +28,12 @@ pipeline {
           }
         }
 
+        stage("clean package") {
+            steps {
+              echo "🚀 Building the application..."
+              sh ' mvn clean install '
+            }
+        }
 
         stage("build and push docker image") {
 
@@ -70,9 +78,7 @@ pipeline {
                 script {
                     echo "🚀 Update the image in the deployment manifest..."
                     sh """
-                    sed -i 's|image: jingnin/next-img.*|image: ${DOCKER_IMAGE}|' ${MANIFEST_REPO}/${MANIFEST_FILE_PATH}
-                    cat ${MANIFEST_REPO}/${MANIFEST_FILE_PATH}
-                    echo 'updated tag'
+                    sed -i 's|image: ${IMAGE}:.*|image: ${DOCKER_IMAGE}|' ${MANIFEST_REPO}/${MANIFEST_FILE_PATH}
                     """
                 }
             }
@@ -84,8 +90,6 @@ pipeline {
                     dir("${MANIFEST_REPO}") {
                         withCredentials([usernamePassword(credentialsId: 'github-token', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
                             sh """
-                            echo 'user: $GIT_USER'
-                            echo 'pass: $GIT_PASS'
                             git config --global user.name "manin"
                             git config --global user.email "sokmanin.1918@gmail.com"
                             echo "🚀 Checking..."
@@ -95,17 +99,11 @@ pipeline {
                             echo "🚀 Start pushing to manifest repo"
                             git add ${MANIFEST_FILE_PATH}
                             git commit -m "Update image to ${DOCKER_IMAGE}"
-                            git push https://${GIT_USER}:${GIT_PASS}@github.com/Manin1903/manifest-nextjs.git
+                            git push https://${GIT_USER}:${GIT_PASS}@github.com/Manin1903/manifest-spring.git
                             """
                         }
                     }
                 }
-            }
-        }
-
-        stage("running") {
-            steps {
-                echo "running ......"
             }
         }
         
